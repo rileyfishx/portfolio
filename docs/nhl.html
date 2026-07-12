@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NHL Analytics Database — Riley Fisher</title>
+<meta name="description" content="A five-table MySQL database for NHL standings, games, and rosters, with a Python ingestion pipeline and a library of report queries using window functions and CTEs.">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Riley Fisher<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#process">Process</a></li>
+      <li><a href="mailto:rileyfishx@gmail.com">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle color theme">◐</button>
+  </div>
+</nav>
+
+<div class="wrap">
+  <a class="back-link" href="index.html">← Back to all projects</a>
+</div>
+
+<header class="case-hero">
+  <div class="wrap">
+    <span class="eyebrow">NHL Analytics</span>
+    <h1>NHL Standings &amp; Roster Database</h1>
+    <p class="lede">
+      A five-table MySQL database that tracks every team, daily standings
+      snapshot, game result, and roster. Fed by a Python ingestion script
+      that grows the dataset every day the pipeline runs, then queried with
+      a library of report scripts covering standings, home/away splits,
+      roster composition, and scoring trends.
+    </p>
+    <div class="stat-strip">
+      <div class="stat-box"><b>5</b><span>Tables</span></div>
+      <div class="stat-box"><b>7</b><span>Report Queries</span></div>
+      <div class="stat-box"><b>Daily</b><span>Ingestion Job</span></div>
+      <div class="stat-box"><b>2</b><span>Self-Joins on Teams</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The Database</h2>
+      <p>Five tables: one anchor table, three fact tables, and a join table linking players to teams by season.</p>
+    </div>
+    <table class="schema-table">
+      <thead>
+        <tr><th>Table</th><th>Grows</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tname">teams</td>
+          <td class="trows">Fixed</td>
+          <td>One row per team — the anchor table everything else joins back to. Holds <code>team_abbrev</code> (e.g. CAR), team name, conference, and division.</td>
+        </tr>
+        <tr>
+          <td class="tname">standings</td>
+          <td class="trows">Daily</td>
+          <td>One row per team per date: points, wins, losses, OT losses. A new snapshot is appended every day the ingest script runs.</td>
+        </tr>
+        <tr>
+          <td class="tname">games</td>
+          <td class="trows">Per game</td>
+          <td>One row per game, with <code>home_team_id</code> and <code>away_team_id</code> both pointing back to <code>teams</code>, plus scores, date, and game state.</td>
+        </tr>
+        <tr>
+          <td class="tname">players</td>
+          <td class="trows">Roster</td>
+          <td>One row per player — name, position, and birth date, keyed on the NHL's own player ID.</td>
+        </tr>
+        <tr>
+          <td class="tname">rosters</td>
+          <td class="trows">Per season</td>
+          <td>Join table linking <code>players</code> to <code>teams</code> for a given season — one row per player-team-season combination.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How It Was Built</h2>
+      <p>Nine numbered scripts, run in dependency order, plus a Python loader that keeps the standings table current.</p>
+    </div>
+    <ul class="step-list">
+      <li>
+        <b>Create the database and lookup structure</b>
+        <p><code>01_create_database.sql</code> → <code>02_create_teams_table.sql</code> set up <code>nhl_data</code> and the anchor <code>teams</code> table first, since every other table references it.</p>
+      </li>
+      <li>
+        <b>Create the fact tables</b>
+        <p><code>03_create_standings_table.sql</code>, <code>04_create_games_table.sql</code>, <code>05_create_players_table.sql</code>, and <code>06_create_rosters_table.sql</code> build out the tables that reference <code>teams</code> and, in the roster's case, <code>players</code> too.</p>
+      </li>
+      <li>
+        <b>Lock down integrity</b>
+        <p><code>07_add_constraints.sql</code> and <code>08_add_indexes.sql</code> add foreign keys and indexes on the columns every report query filters or joins on — <code>team_id</code>, <code>game_date</code>, <code>standings_date</code>.</p>
+      </li>
+      <li>
+        <b>Load and refresh the data</b>
+        <p><code>load_nhl.py</code> pulls current standings, schedule, and roster data, resolves it against existing rows, and inserts new games and a fresh standings snapshot — designed to be safe to re-run daily.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Featured Queries</h2>
+      <p>Three of the seven report scripts, chosen to show a spread of SQL techniques.</p>
+    </div>
+
+    <div class="query-block">
+      <div class="query-head">
+        <div class="qnum">Report 01</div>
+        <h3>Team Standings Summary</h3>
+        <p>The classic league table: every team ranked by points as of its most recent standings snapshot, with win percentage and games played derived on the fly rather than stored.</p>
+      </div>
+      <div class="concept-row">
+        <span class="tag">Correlated subquery</span>
+        <span class="tag">RANK() OVER (PARTITION BY …)</span>
+        <span class="tag">ROUND()</span>
+      </div>
+      <pre class="sql">USE nhl_data;
+
+SELECT
+    t.team_abbrev,
+    t.team_name,
+    t.conference,
+    t.division,
+    s.standings_date,
+    s.points,
+    s.wins,
+    s.losses,
+    s.ot_losses,
+    -- games played = wins + losses + OT losses
+    (s.wins + s.losses + s.ot_losses)          AS games_played,
+    -- win percentage = wins / games played, rounded to 3 decimal places
+    ROUND(s.wins / (s.wins + s.losses + s.ot_losses), 3) AS win_pct,
+    -- rank within the full league by points (ties share the same rank)
+    RANK() OVER (PARTITION BY t.conference ORDER BY s.points DESC) AS league_rank
+FROM standings s
+JOIN teams t ON t.team_id = s.team_id
+-- keep only the latest date for each team
+WHERE s.standings_date = (
+    SELECT MAX(standings_date)
+    FROM standings
+    WHERE team_id = s.team_id
+)
+ORDER BY league_rank;</pre>
+    </div>
+
+    <div class="query-block">
+      <div class="query-head">
+        <div class="qnum">Report 04</div>
+        <h3>Team Home vs Away Win Record</h3>
+        <p>For every team, home and away records side by side — a classic hockey analysis question. Two CTEs count wins and losses from each perspective, then join back to <code>teams</code> so every team appears even with zero games played.</p>
+      </div>
+      <div class="concept-row">
+        <span class="tag">WITH … CTE</span>
+        <span class="tag">Conditional SUM(CASE …)</span>
+        <span class="tag">LEFT JOIN + COALESCE</span>
+      </div>
+      <pre class="sql">USE nhl_data;
+
+WITH home_stats AS (
+    SELECT
+        g.home_team_id                                         AS team_id,
+        COUNT(*)                                               AS home_games,
+        SUM(CASE WHEN g.home_score > g.away_score THEN 1 ELSE 0 END) AS home_wins,
+        SUM(CASE WHEN g.home_score < g.away_score THEN 1 ELSE 0 END) AS home_losses
+    FROM games g
+    WHERE g.game_state = 'OFF'
+    GROUP BY g.home_team_id
+),
+away_stats AS (
+    SELECT
+        g.away_team_id                                         AS team_id,
+        COUNT(*)                                               AS away_games,
+        SUM(CASE WHEN g.away_score > g.home_score THEN 1 ELSE 0 END) AS away_wins,
+        SUM(CASE WHEN g.away_score < g.home_score THEN 1 ELSE 0 END) AS away_losses
+    FROM games g
+    WHERE g.game_state = 'OFF'
+    GROUP BY g.away_team_id
+)
+SELECT
+    t.team_abbrev,
+    t.team_name,
+    t.division,
+    COALESCE(h.home_games,  0) AS home_games,
+    COALESCE(h.home_wins,   0) AS home_wins,
+    COALESCE(h.home_losses, 0) AS home_losses,
+    COALESCE(a.away_games,  0) AS away_games,
+    COALESCE(a.away_wins,   0) AS away_wins,
+    COALESCE(a.away_losses, 0) AS away_losses,
+    CASE
+        WHEN COALESCE(h.home_games, 0) = 0 THEN NULL
+        ELSE ROUND(h.home_wins / h.home_games, 3)
+    END                        AS home_win_pct,
+    CASE
+        WHEN COALESCE(a.away_games, 0) = 0 THEN NULL
+        ELSE ROUND(a.away_wins / a.away_games, 3)
+    END                        AS away_win_pct
+FROM teams t
+LEFT JOIN home_stats h ON h.team_id = t.team_id
+LEFT JOIN away_stats a ON a.team_id = t.team_id
+ORDER BY t.team_abbrev;</pre>
+    </div>
+
+    <div class="query-block">
+      <div class="query-head">
+        <div class="qnum">Report 07</div>
+        <h3>Scoring Trends by Month</h3>
+        <p>Average and total goals per month across the season, plus how often the home team wins — useful for spotting whether scoring cools off as teams tighten up defensively later in the year.</p>
+      </div>
+      <div class="concept-row">
+        <span class="tag">Date functions</span>
+        <span class="tag">GROUP BY multiple columns</span>
+        <span class="tag">Conditional aggregation</span>
+      </div>
+      <pre class="sql">USE nhl_data;
+
+SELECT
+    YEAR(g.game_date)                                           AS game_year,
+    MONTH(g.game_date)                                          AS game_month,
+    MONTHNAME(g.game_date)                                      AS month_name,
+    COUNT(*)                                                    AS games_played,
+    SUM(g.home_score + g.away_score)                            AS total_goals,
+    ROUND(AVG(g.home_score + g.away_score), 2)                  AS avg_goals_per_game,
+    ROUND(AVG(g.home_score), 2)                                 AS avg_home_score,
+    ROUND(AVG(g.away_score), 2)                                 AS avg_away_score,
+    -- how often the home team wins that month
+    ROUND(
+        SUM(CASE WHEN g.home_score > g.away_score THEN 1 ELSE 0 END) / COUNT(*),
+        3
+    )                                                           AS home_win_rate
+FROM games g
+WHERE g.game_state = 'OFF'
+GROUP BY game_year, game_month, month_name
+ORDER BY game_year, game_month;</pre>
+    </div>
+
+    <div class="case-nav">
+      <a class="back-link" href="index.html">← Back to all projects</a>
+      <a class="back-link" href="healthcare.html">Next: Patient Segmentation Database →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Riley Fisher. Built with plain HTML, CSS, and MySQL.</p>
+    <div class="foot-links">
+      <a href="mailto:rileyfishx@gmail.com">rileyfishx@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

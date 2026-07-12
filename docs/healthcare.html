@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patient Segmentation Database — Riley Fisher</title>
+<meta name="description" content="A normalized MySQL database for a 2,000-patient dataset, with lookup tables, risk scoring, and a library of segmentation and cost-analysis report queries.">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Riley Fisher<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#process">Process</a></li>
+      <li><a href="mailto:rileyfishx@gmail.com">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle color theme">◐</button>
+  </div>
+</nav>
+
+<div class="wrap">
+  <a class="back-link" href="index.html">← Back to all projects</a>
+</div>
+
+<header class="case-hero">
+  <div class="wrap">
+    <span class="eyebrow">Healthcare Analytics</span>
+    <h1>Patient Segmentation Database</h1>
+    <p class="lede">
+      A normalized MySQL database built around a 2,000-patient dataset.
+      Three lookup tables keep repeated text — state, insurance type,
+      condition — out of the main fact table, and a library of report
+      queries turns the raw rows into segmentation, risk scoring, and
+      cost-analysis views a care team could actually use.
+    </p>
+    <div class="stat-strip">
+      <div class="stat-box"><b>4</b><span>Tables</span></div>
+      <div class="stat-box"><b>2,000</b><span>Patient Rows</span></div>
+      <div class="stat-box"><b>7</b><span>Report Queries</span></div>
+      <div class="stat-box"><b>~25%</b><span>NULL Conditions Handled</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The Database</h2>
+      <p>One fact table and three small lookup tables — built to avoid repeating the same text thousands of times.</p>
+    </div>
+    <table class="schema-table">
+      <thead>
+        <tr><th>Table</th><th>Rows</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tname">patients</td>
+          <td class="trows">2,000</td>
+          <td>The main table — one row per patient. Age, gender, BMI, billing, and visit info, plus foreign keys pointing to the three lookup tables below.</td>
+        </tr>
+        <tr>
+          <td class="tname">states</td>
+          <td class="trows">10</td>
+          <td>One row per US state in the dataset. Converts a small <code>state_id</code> back to a 2-letter code like <code>CA</code> or <code>TX</code>.</td>
+        </tr>
+        <tr>
+          <td class="tname">insurance_types</td>
+          <td class="trows">4</td>
+          <td>Medicaid, Medicare, Private, Self-Pay — converts <code>insurance_type_id</code> to a readable name.</td>
+        </tr>
+        <tr>
+          <td class="tname">conditions</td>
+          <td class="trows">9</td>
+          <td>The 9 primary conditions tracked. About 25% of patients have none — stored as <code>NULL</code> in <code>patients.condition_id</code> rather than forced into a category.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How It Was Built</h2>
+      <p>Six numbered scripts, run in dependency order, then a Python loader that resolves the raw CSV against the lookup tables.</p>
+    </div>
+    <ul class="step-list">
+      <li>
+        <b>Create the database</b>
+        <p><code>01_create_database.sql</code> — a single <code>CREATE DATABASE</code> statement. Every later script needs <code>patient_data</code> to already exist.</p>
+      </li>
+      <li>
+        <b>Create the lookup tables</b>
+        <p><code>02_create_lookup_tables.sql</code> builds <code>states</code>, <code>insurance_types</code>, and <code>conditions</code> from values found by inspecting the source CSV ahead of time — 10 states, 4 insurance types, 9 conditions.</p>
+      </li>
+      <li>
+        <b>Create the patients table</b>
+        <p><code>03_create_patients_table.sql</code> builds the main fact table, storing small integer IDs instead of repeating strings like "Medicare" across 2,000 rows.</p>
+      </li>
+      <li>
+        <b>Lock down integrity and speed</b>
+        <p><code>04_add_constraints.sql</code> adds foreign keys back to the lookup tables; <code>05_add_indexes.sql</code> indexes the columns the report queries filter and group on most.</p>
+      </li>
+      <li>
+        <b>Load the data</b>
+        <p><code>load_patients.py</code> reads the source CSV with <code>pandas</code>, resolves each text value against the correct lookup table, and inserts clean rows via <code>mysql-connector-python</code>.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Featured Queries</h2>
+      <p>Three of the seven report scripts, chosen to show a spread of SQL techniques.</p>
+    </div>
+
+    <div class="query-block">
+      <div class="query-head">
+        <div class="qnum">Report 01</div>
+        <h3>Full Patient Overview</h3>
+        <p>The master export: one row per patient with every ID code swapped for a human-readable name — what you'd hand to an analyst or drop into Excel. Structurally, every other report builds on this same shape.</p>
+      </div>
+      <div class="concept-row">
+        <span class="tag">INNER JOIN vs LEFT JOIN</span>
+        <span class="tag">COALESCE()</span>
+        <span class="tag">CASE WHEN flag</span>
+      </div>
+      <pre class="sql">USE patient_data;
+
+SELECT
+    p.patient_id,
+    p.age,
+    p.gender,
+    st.state_code,
+    p.city,
+    p.height_cm,
+    p.weight_kg,
+    p.bmi,
+    it.type_name                                AS insurance_type,
+    COALESCE(c.condition_name, 'None on record') AS primary_condition,
+    p.num_chronic_conditions,
+    p.annual_visits,
+    p.avg_billing_amount,
+    p.last_visit_date,
+    p.days_since_last_visit,
+    -- convert the 0/1 flag to a Yes/No for readability in Excel
+    CASE WHEN p.preventive_care_flag = 1 THEN 'Yes' ELSE 'No' END AS preventive_care
+FROM patients p
+JOIN states          st ON st.state_id          = p.state_id
+JOIN insurance_types it ON it.insurance_type_id  = p.insurance_type_id
+LEFT JOIN conditions  c  ON c.condition_id        = p.condition_id
+-- LEFT JOIN for conditions because ~25% of patients have no condition (NULL)
+-- an INNER JOIN would silently drop those 495 patients from the results
+ORDER BY p.patient_id;</pre>
+    </div>
+
+    <div class="query-block">
+      <div class="query-head">
+        <div class="qnum">Report 06</div>
+        <h3>High-Risk Patient Identification</h3>
+        <p>Patients who meet several "high risk" criteria at once — chronic condition count, BMI, and time since last visit — combined into a simple additive risk score so a care team can prioritize outreach.</p>
+      </div>
+      <div class="concept-row">
+        <span class="tag">Multi-condition WHERE</span>
+        <span class="tag">Computed risk score</span>
+        <span class="tag">Sortable ranking</span>
+      </div>
+      <pre class="sql">USE patient_data;
+
+SELECT
+    p.patient_id,
+    p.age,
+    p.gender,
+    st.state_code,
+    p.city,
+    p.bmi,
+    p.num_chronic_conditions,
+    COALESCE(c.condition_name, 'None on record') AS primary_condition,
+    it.type_name                                 AS insurance_type,
+    p.annual_visits,
+    p.avg_billing_amount,
+    p.last_visit_date,
+    p.days_since_last_visit,
+    -- a simple risk score: 1 point per condition + 1 if BMI > 30 + 1 if long gap
+    (
+        p.num_chronic_conditions
+        + CASE WHEN p.bmi > 30 THEN 1 ELSE 0 END
+        + CASE WHEN p.days_since_last_visit > 180 THEN 1 ELSE 0 END
+        + CASE WHEN p.annual_visits < 2 THEN 1 ELSE 0 END
+    )                                            AS risk_score
+FROM patients p
+JOIN states          st ON st.state_id          = p.state_id
+JOIN insurance_types it ON it.insurance_type_id  = p.insurance_type_id
+LEFT JOIN conditions  c  ON c.condition_id        = p.condition_id
+WHERE
+    p.num_chronic_conditions >= 3
+    AND p.bmi > 30
+    AND p.days_since_last_visit > 180
+ORDER BY risk_score DESC, p.days_since_last_visit DESC;</pre>
+    </div>
+
+    <div class="query-block">
+      <div class="query-head">
+        <div class="qnum">Report 07</div>
+        <h3>Preventive Care Adoption Analysis</h3>
+        <p>Tests a real population-health hypothesis — does preventive care actually cost less? — first as a head-to-head group comparison, then broken down by insurance type.</p>
+      </div>
+      <div class="concept-row">
+        <span class="tag">GROUP BY comparison</span>
+        <span class="tag">Conditional AVG(CASE …)</span>
+        <span class="tag">Multi-query report file</span>
+      </div>
+      <pre class="sql">USE patient_data;
+
+-- Part 1: head-to-head comparison of preventive vs non-preventive
+SELECT
+    CASE WHEN p.preventive_care_flag = 1 THEN 'Uses Preventive Care'
+         ELSE 'No Preventive Care'
+    END                                         AS care_group,
+    COUNT(p.patient_id)                         AS patient_count,
+    ROUND(AVG(p.age), 1)                        AS avg_age,
+    ROUND(AVG(p.bmi), 1)                        AS avg_bmi,
+    ROUND(AVG(p.num_chronic_conditions), 2)     AS avg_chronic_conditions,
+    ROUND(AVG(p.annual_visits), 2)              AS avg_annual_visits,
+    ROUND(AVG(p.avg_billing_amount), 2)         AS avg_billing_amount,
+    ROUND(AVG(p.days_since_last_visit), 0)      AS avg_days_since_last_visit
+FROM patients p
+GROUP BY p.preventive_care_flag
+ORDER BY p.preventive_care_flag DESC;
+
+-- Part 2: preventive care rate broken down by insurance type
+SELECT
+    it.type_name                                AS insurance_type,
+    COUNT(p.patient_id)                         AS total_patients,
+    SUM(p.preventive_care_flag)                 AS preventive_care_users,
+    ROUND(
+        SUM(p.preventive_care_flag) / COUNT(p.patient_id) * 100,
+        1
+    )                                           AS preventive_care_pct,
+    ROUND(
+        AVG(CASE WHEN p.preventive_care_flag = 1 THEN p.avg_billing_amount END),
+        2
+    )                                           AS avg_billing_preventive,
+    ROUND(
+        AVG(CASE WHEN p.preventive_care_flag = 0 THEN p.avg_billing_amount END),
+        2
+    )                                           AS avg_billing_no_preventive
+FROM patients p
+JOIN insurance_types it ON it.insurance_type_id = p.insurance_type_id
+GROUP BY it.insurance_type_id, it.type_name
+ORDER BY preventive_care_pct DESC;</pre>
+    </div>
+
+    <div class="case-nav">
+      <a class="back-link" href="nhl.html">← Previous: NHL Analytics Database</a>
+      <a class="back-link" href="index.html">Back to all projects →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Riley Fisher. Built with plain HTML, CSS, and MySQL.</p>
+    <div class="foot-links">
+      <a href="mailto:rileyfishx@gmail.com">rileyfishx@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

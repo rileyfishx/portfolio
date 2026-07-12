@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riley Fisher — SQL &amp; Data Portfolio</title>
+<meta name="description" content="SQL database design and analytics portfolio: two databases built from scratch, seeded with Python, and queried with joins, window functions, and CTEs.">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Riley Fisher<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="mailto:rileyfishx@gmail.com">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" data-theme-toggle aria-label="Toggle color theme">◐</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">SQL &middot; MySQL &middot; Data Modeling</span>
+    <h1>I design databases, then write the queries that make them useful.</h1>
+    <p class="lede">
+      Two projects, built end to end: schema design, constraints and indexes,
+      Python ingestion scripts, and a library of analytical report queries —
+      from simple joins to window functions and CTEs.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#projects">View the projects</a>
+      <a class="btn btn-ghost" href="mailto:rileyfishx@gmail.com">Get in touch</a>
+    </div>
+    <div class="pill-row">
+      <span class="pill">MySQL</span>
+      <span class="pill">Python</span>
+      <span class="pill">pandas</span>
+      <span class="pill">Window Functions</span>
+      <span class="pill">CTEs</span>
+      <span class="pill">Schema Design</span>
+      <span class="pill">ETL / Ingestion</span>
+      <span class="pill">Query Optimization</span>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Projects</h2>
+      <p>Two databases, built from a blank schema to a set of production-style reports.</p>
+    </div>
+    <div class="project-grid">
+
+      <a class="card" href="nhl.html">
+        <span class="card-tag">NHL Analytics</span>
+        <h3>NHL Standings &amp; Roster Database</h3>
+        <p>
+          A five-table MySQL database tracking every team, game, and roster,
+          fed by a daily Python ingestion script. Query layer covers
+          standings, home/away splits, and scoring trends.
+        </p>
+        <div class="stat-row">
+          <div class="stat"><b>5</b><span>Tables</span></div>
+          <div class="stat"><b>7</b><span>Report Queries</span></div>
+          <div class="stat"><b>Daily</b><span>Ingestion</span></div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">Window Functions</span>
+          <span class="tag">CTEs</span>
+          <span class="tag">Self-Joins</span>
+        </div>
+        <span class="card-cta">View case study →</span>
+      </a>
+
+      <a class="card" href="healthcare.html">
+        <span class="card-tag">Healthcare Analytics</span>
+        <h3>Patient Segmentation Database</h3>
+        <p>
+          A normalized MySQL database for a 2,000-patient dataset, with
+          lookup tables for states, insurance types, and conditions.
+          Query layer covers segmentation, risk scoring, and cost analysis.
+        </p>
+        <div class="stat-row">
+          <div class="stat"><b>4</b><span>Tables</span></div>
+          <div class="stat"><b>2,000</b><span>Patients</span></div>
+          <div class="stat"><b>7</b><span>Report Queries</span></div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">Joins &amp; LEFT JOIN</span>
+          <span class="tag">CASE / COALESCE</span>
+          <span class="tag">Segmentation</span>
+        </div>
+        <span class="card-cta">View case study →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How each project is built</h2>
+      <p>Same process both times, applied to two very different datasets.</p>
+    </div>
+    <ul class="step-list">
+      <li>
+        <b>Design the schema</b>
+        <p>Start from the raw CSV, identify repeated text values, and pull them into lookup tables so the main fact table stores small integer foreign keys instead of duplicated strings.</p>
+      </li>
+      <li>
+        <b>Build the tables</b>
+        <p>Numbered <code>.sql</code> scripts create the database, tables, constraints, and indexes in dependency order — database first, lookup tables next, fact tables and foreign keys last.</p>
+      </li>
+      <li>
+        <b>Load the data</b>
+        <p>Python scripts using <code>pandas</code> and <code>mysql-connector-python</code> read the source CSV or API, resolve values against the lookup tables, and insert clean rows.</p>
+      </li>
+      <li>
+        <b>Write the report queries</b>
+        <p>A library of numbered report queries answers real questions — segmentation, risk scoring, standings, home/away performance — using joins, CASE logic, window functions, and CTEs.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Riley Fisher. Built with plain HTML, CSS, and MySQL.</p>
+    <div class="foot-links">
+      <a href="mailto:rileyfishx@gmail.com">rileyfishx@gmail.com</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>
