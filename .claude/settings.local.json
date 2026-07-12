@@ -3,7 +3,13 @@
     "allow": [
       "Bash(pip show *)",
       "Bash(pip install *)",
-      "Bash(python3 -c \"import docx; print\\('ok'\\)\")"
+      "Bash(python3 -c \"import docx; print\\('ok'\\)\")",
+      "Bash(node scripts/validate_palette.js \"#0d7d6f,#b45309\" --mode light --surface \"#ffffff\")",
+      "Bash(node scripts/validate_palette.js \"#5fd6c4,#f0b563\" --mode dark --surface \"#161920\")",
+      "Bash(command -v node)",
+      "Bash(python3 \"/private/tmp/claude-501/-Users-rileyfisher-Desktop-Portfolio/9f386d30-8d11-402c-b428-258118237cff/scratchpad/validate.py\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3)"
     ]
   }
 }

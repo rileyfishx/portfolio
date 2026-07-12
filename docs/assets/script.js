@@ -59,4 +59,53 @@
   document.querySelectorAll("pre.sql").forEach(function (block) {
     block.innerHTML = highlight(block.textContent.replace(/^\n/, "").replace(/\n$/, ""));
   });
+
+  var chartMarks = document.querySelectorAll(".viz-bar[data-value], .viz-dot[data-value]");
+  if (chartMarks.length) {
+    var tooltip = document.createElement("div");
+    tooltip.className = "chart-tooltip";
+    tooltip.setAttribute("role", "tooltip");
+    var ttKey = document.createElement("span");
+    ttKey.className = "tt-key";
+    ttKey.style.cssText = "display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;";
+    var ttLabel = document.createElement("span");
+    ttLabel.className = "tt-label";
+    var ttValue = document.createElement("span");
+    ttValue.className = "tt-value";
+    tooltip.appendChild(ttKey);
+    tooltip.appendChild(ttLabel);
+    tooltip.appendChild(document.createTextNode(" "));
+    tooltip.appendChild(ttValue);
+    document.body.appendChild(tooltip);
+
+    function showTooltip(mark, x, y) {
+      var isS2 = mark.classList.contains("s2");
+      ttKey.style.background = isS2
+        ? getComputedStyle(root).getPropertyValue("--series-2")
+        : getComputedStyle(root).getPropertyValue("--series-1");
+      ttLabel.textContent = mark.getAttribute("data-label") || "";
+      ttValue.textContent = mark.getAttribute("data-value") || "";
+      tooltip.style.left = x + "px";
+      tooltip.style.top = y + "px";
+      tooltip.classList.add("visible");
+    }
+    function hideTooltip() {
+      tooltip.classList.remove("visible");
+    }
+
+    chartMarks.forEach(function (mark) {
+      mark.addEventListener("pointerenter", function (e) {
+        showTooltip(mark, e.clientX, e.clientY);
+      });
+      mark.addEventListener("pointermove", function (e) {
+        showTooltip(mark, e.clientX, e.clientY);
+      });
+      mark.addEventListener("pointerleave", hideTooltip);
+      mark.addEventListener("focus", function () {
+        var r = mark.getBoundingClientRect();
+        showTooltip(mark, r.left + r.width / 2, r.top);
+      });
+      mark.addEventListener("blur", hideTooltip);
+    });
+  }
 })();

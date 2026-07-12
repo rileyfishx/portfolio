@@ -117,7 +117,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Featured Queries</h2>
-      <p>Three of the seven report scripts, chosen to show a spread of SQL techniques.</p>
+      <p>Three of the seven report scripts, chosen to show a spread of SQL techniques. Each is paired with a chart of what the result set looks like — illustrative sample output, not a live connection to the database.</p>
     </div>
 
     <div class="query-block">
@@ -158,6 +158,66 @@ WHERE s.standings_date = (
     WHERE team_id = s.team_id
 )
 ORDER BY league_rank;</pre>
+
+      <div class="chart-wrap">
+        <div class="chart-eyebrow">Sample Output</div>
+        <p class="chart-title">League points leaders, top 6 per conference</p>
+        <div class="chart-panels">
+          <div>
+            <p class="chart-panel-label"><span class="dot" style="background:var(--series-1)"></span>Eastern Conference</p>
+            <svg class="viz-svg" viewBox="0 0 300 202" role="img" aria-label="Points by team">
+<text x="32" y="19.5" text-anchor="end" class="viz-label">BOS</text>
+<path d="M42,6 L262.0,6 Q266.0,6 266.0,10 L266.0,22 Q266.0,26 262.0,26 L42,26 Z" class="viz-bar" data-label="BOS" data-value="112 pts" tabindex="0" aria-label="BOS: 112 points"></path>
+<text x="273.0" y="19.5" class="viz-value">112</text>
+<text x="32" y="53.5" text-anchor="end" class="viz-label">TOR</text>
+<path d="M42,40 L250.0,40 Q254.0,40 254.0,44 L254.0,56 Q254.0,60 250.0,60 L42,60 Z" class="viz-bar" data-label="TOR" data-value="106 pts" tabindex="0" aria-label="TOR: 106 points"></path>
+<text x="261.0" y="53.5" class="viz-value">106</text>
+<text x="32" y="87.5" text-anchor="end" class="viz-label">TBL</text>
+<path d="M42,74 L240.0,74 Q244.0,74 244.0,78 L244.0,90 Q244.0,94 240.0,94 L42,94 Z" class="viz-bar" data-label="TBL" data-value="101 pts" tabindex="0" aria-label="TBL: 101 points"></path>
+<text x="251.0" y="87.5" class="viz-value">101</text>
+<text x="32" y="121.5" text-anchor="end" class="viz-label">CAR</text>
+<path d="M42,108 L234.0,108 Q238.0,108 238.0,112 L238.0,124 Q238.0,128 234.0,128 L42,128 Z" class="viz-bar" data-label="CAR" data-value="98 pts" tabindex="0" aria-label="CAR: 98 points"></path>
+<text x="245.0" y="121.5" class="viz-value">98</text>
+<text x="32" y="155.5" text-anchor="end" class="viz-label">NYR</text>
+<path d="M42,142 L228.0,142 Q232.0,142 232.0,146 L232.0,158 Q232.0,162 228.0,162 L42,162 Z" class="viz-bar" data-label="NYR" data-value="95 pts" tabindex="0" aria-label="NYR: 95 points"></path>
+<text x="239.0" y="155.5" class="viz-value">95</text>
+<text x="32" y="189.5" text-anchor="end" class="viz-label">FLA</text>
+<path d="M42,176 L222.0,176 Q226.0,176 226.0,180 L226.0,192 Q226.0,196 222.0,196 L42,196 Z" class="viz-bar" data-label="FLA" data-value="92 pts" tabindex="0" aria-label="FLA: 92 points"></path>
+<text x="233.0" y="189.5" class="viz-value">92</text>
+</svg>
+          </div>
+          <div>
+            <p class="chart-panel-label"><span class="dot" style="background:var(--series-1)"></span>Western Conference</p>
+            <svg class="viz-svg" viewBox="0 0 300 202" role="img" aria-label="Points by team">
+<text x="32" y="19.5" text-anchor="end" class="viz-label">COL</text>
+<path d="M42,6 L262.0,6 Q266.0,6 266.0,10 L266.0,22 Q266.0,26 262.0,26 L42,26 Z" class="viz-bar" data-label="COL" data-value="118 pts" tabindex="0" aria-label="COL: 118 points"></path>
+<text x="273.0" y="19.5" class="viz-value">118</text>
+<text x="32" y="53.5" text-anchor="end" class="viz-label">DAL</text>
+<path d="M42,40 L235.4,40 Q239.4,40 239.4,44 L239.4,56 Q239.4,60 235.4,60 L42,60 Z" class="viz-bar" data-label="DAL" data-value="104 pts" tabindex="0" aria-label="DAL: 104 points"></path>
+<text x="246.4" y="53.5" class="viz-value">104</text>
+<text x="32" y="87.5" text-anchor="end" class="viz-label">VGK</text>
+<path d="M42,74 L227.8,74 Q231.8,74 231.8,78 L231.8,90 Q231.8,94 227.8,94 L42,94 Z" class="viz-bar" data-label="VGK" data-value="100 pts" tabindex="0" aria-label="VGK: 100 points"></path>
+<text x="238.8" y="87.5" class="viz-value">100</text>
+<text x="32" y="121.5" text-anchor="end" class="viz-label">WPG</text>
+<path d="M42,108 L222.1,108 Q226.1,108 226.1,112 L226.1,124 Q226.1,128 222.1,128 L42,128 Z" class="viz-bar" data-label="WPG" data-value="97 pts" tabindex="0" aria-label="WPG: 97 points"></path>
+<text x="233.1" y="121.5" class="viz-value">97</text>
+<text x="32" y="155.5" text-anchor="end" class="viz-label">EDM</text>
+<path d="M42,142 L216.4,142 Q220.4,142 220.4,146 L220.4,158 Q220.4,162 216.4,162 L42,162 Z" class="viz-bar" data-label="EDM" data-value="94 pts" tabindex="0" aria-label="EDM: 94 points"></path>
+<text x="227.4" y="155.5" class="viz-value">94</text>
+<text x="32" y="189.5" text-anchor="end" class="viz-label">MIN</text>
+<path d="M42,176 L208.8,176 Q212.8,176 212.8,180 L212.8,192 Q212.8,196 208.8,196 L42,196 Z" class="viz-bar" data-label="MIN" data-value="90 pts" tabindex="0" aria-label="MIN: 90 points"></path>
+<text x="219.8" y="189.5" class="viz-value">90</text>
+</svg>
+          </div>
+        </div>
+        <details class="chart-table-toggle">
+          <summary>View as table</summary>
+          <table class="chart-data-table">
+            <thead><tr><th>Team</th><th class="num">Points</th></tr></thead>
+            <tbody><tr><td>BOS</td><td class="num">112</td></tr><tr><td>TOR</td><td class="num">106</td></tr><tr><td>TBL</td><td class="num">101</td></tr><tr><td>CAR</td><td class="num">98</td></tr><tr><td>NYR</td><td class="num">95</td></tr><tr><td>FLA</td><td class="num">92</td></tr><tr><td>COL</td><td class="num">118</td></tr><tr><td>DAL</td><td class="num">104</td></tr><tr><td>VGK</td><td class="num">100</td></tr><tr><td>WPG</td><td class="num">97</td></tr><tr><td>EDM</td><td class="num">94</td></tr><tr><td>MIN</td><td class="num">90</td></tr></tbody>
+          </table>
+        </details>
+      </div>
     </div>
 
     <div class="query-block">
@@ -215,6 +275,64 @@ FROM teams t
 LEFT JOIN home_stats h ON h.team_id = t.team_id
 LEFT JOIN away_stats a ON a.team_id = t.team_id
 ORDER BY t.team_abbrev;</pre>
+
+      <div class="chart-wrap">
+        <div class="chart-eyebrow">Sample Output</div>
+        <p class="chart-title">Home vs. away win rate, top 8 teams by points</p>
+        <svg class="viz-svg" viewBox="0 0 620 346" role="img" aria-label="Home versus away win percentage by team">
+<text x="38" y="26.0" text-anchor="end" class="viz-label">COL</text>
+<path d="M48,8 L516.4,8 Q519.4,8 519.4,11 L519.4,18 Q519.4,21 516.4,21 L48,21 Z" class="viz-bar" data-label="COL · Home" data-value="71.4%" tabindex="0" aria-label="COL home win rate: 71.4%"></path>
+<text x="525.4" y="17.7" class="viz-value-muted">71%</text>
+<path d="M48,24 L441.2,24 Q444.2,24 444.2,27 L444.2,34 Q444.2,37 441.2,37 L48,37 Z" class="viz-bar s2" data-label="COL · Away" data-value="60.0%" tabindex="0" aria-label="COL away win rate: 60.0%"></path>
+<text x="450.2" y="33.7" class="viz-value-muted">60%</text>
+<text x="38" y="69.0" text-anchor="end" class="viz-label">BOS</text>
+<path d="M48,51 L496.0,51 Q499.0,51 499.0,54 L499.0,61 Q499.0,64 496.0,64 L48,64 Z" class="viz-bar" data-label="BOS · Home" data-value="68.3%" tabindex="0" aria-label="BOS home win rate: 68.3%"></path>
+<text x="505.0" y="60.7" class="viz-value-muted">68%</text>
+<path d="M48,67 L415.4,67 Q418.4,67 418.4,70 L418.4,77 Q418.4,80 415.4,80 L48,80 Z" class="viz-bar s2" data-label="BOS · Away" data-value="56.1%" tabindex="0" aria-label="BOS away win rate: 56.1%"></path>
+<text x="424.4" y="76.7" class="viz-value-muted">56%</text>
+<text x="38" y="112.0" text-anchor="end" class="viz-label">DAL</text>
+<path d="M48,94 L480.1,94 Q483.1,94 483.1,97 L483.1,104 Q483.1,107 480.1,107 L48,107 Z" class="viz-bar" data-label="DAL · Home" data-value="65.9%" tabindex="0" aria-label="DAL home win rate: 65.9%"></path>
+<text x="489.1" y="103.7" class="viz-value-muted">66%</text>
+<path d="M48,110 L399.6,110 Q402.6,110 402.6,113 L402.6,120 Q402.6,123 399.6,123 L48,123 Z" class="viz-bar s2" data-label="DAL · Away" data-value="53.7%" tabindex="0" aria-label="DAL away win rate: 53.7%"></path>
+<text x="408.6" y="119.7" class="viz-value-muted">54%</text>
+<text x="38" y="155.0" text-anchor="end" class="viz-label">VGK</text>
+<path d="M48,137 L455.7,137 Q458.7,137 458.7,140 L458.7,147 Q458.7,150 455.7,150 L48,150 Z" class="viz-bar" data-label="VGK · Home" data-value="62.2%" tabindex="0" aria-label="VGK home win rate: 62.2%"></path>
+<text x="464.7" y="146.7" class="viz-value-muted">62%</text>
+<path d="M48,153 L408.1,153 Q411.1,153 411.1,156 L411.1,163 Q411.1,166 408.1,166 L48,166 Z" class="viz-bar s2" data-label="VGK · Away" data-value="55.0%" tabindex="0" aria-label="VGK away win rate: 55.0%"></path>
+<text x="417.1" y="162.7" class="viz-value-muted">55%</text>
+<text x="38" y="198.0" text-anchor="end" class="viz-label">TOR</text>
+<path d="M48,180 L463.6,180 Q466.6,180 466.6,183 L466.6,190 Q466.6,193 463.6,193 L48,193 Z" class="viz-bar" data-label="TOR · Home" data-value="63.4%" tabindex="0" aria-label="TOR home win rate: 63.4%"></path>
+<text x="472.6" y="189.7" class="viz-value-muted">63%</text>
+<path d="M48,196 L383.1,196 Q386.1,196 386.1,199 L386.1,206 Q386.1,209 383.1,209 L48,209 Z" class="viz-bar s2" data-label="TOR · Away" data-value="51.2%" tabindex="0" aria-label="TOR away win rate: 51.2%"></path>
+<text x="392.1" y="205.7" class="viz-value-muted">51%</text>
+<text x="38" y="241.0" text-anchor="end" class="viz-label">EDM</text>
+<path d="M48,223 L437.9,223 Q440.9,223 440.9,226 L440.9,233 Q440.9,236 437.9,236 L48,236 Z" class="viz-bar" data-label="EDM · Home" data-value="59.5%" tabindex="0" aria-label="EDM home win rate: 59.5%"></path>
+<text x="446.9" y="232.7" class="viz-value-muted">60%</text>
+<path d="M48,239 L375.1,239 Q378.1,239 378.1,242 L378.1,249 Q378.1,252 375.1,252 L48,252 Z" class="viz-bar s2" data-label="EDM · Away" data-value="50.0%" tabindex="0" aria-label="EDM away win rate: 50.0%"></path>
+<text x="384.1" y="248.7" class="viz-value-muted">50%</text>
+<text x="38" y="284.0" text-anchor="end" class="viz-label">CAR</text>
+<path d="M48,266 L447.1,266 Q450.1,266 450.1,269 L450.1,276 Q450.1,279 447.1,279 L48,279 Z" class="viz-bar" data-label="CAR · Home" data-value="60.9%" tabindex="0" aria-label="CAR home win rate: 60.9%"></path>
+<text x="456.1" y="275.7" class="viz-value-muted">61%</text>
+<path d="M48,282 L367.2,282 Q370.2,282 370.2,285 L370.2,292 Q370.2,295 367.2,295 L48,295 Z" class="viz-bar s2" data-label="CAR · Away" data-value="48.8%" tabindex="0" aria-label="CAR away win rate: 48.8%"></path>
+<text x="376.2" y="291.7" class="viz-value-muted">49%</text>
+<text x="38" y="327.0" text-anchor="end" class="viz-label">NYR</text>
+<path d="M48,309 L431.3,309 Q434.3,309 434.3,312 L434.3,319 Q434.3,322 431.3,322 L48,322 Z" class="viz-bar" data-label="NYR · Home" data-value="58.5%" tabindex="0" aria-label="NYR home win rate: 58.5%"></path>
+<text x="440.3" y="318.7" class="viz-value-muted">58%</text>
+<path d="M48,325 L350.7,325 Q353.7,325 353.7,328 L353.7,335 Q353.7,338 350.7,338 L48,338 Z" class="viz-bar s2" data-label="NYR · Away" data-value="46.3%" tabindex="0" aria-label="NYR away win rate: 46.3%"></path>
+<text x="359.7" y="334.7" class="viz-value-muted">46%</text>
+</svg>
+        <div class="chart-legend">
+          <span class="chart-legend-item"><span class="chart-legend-swatch s1"></span>Home win %</span>
+          <span class="chart-legend-item"><span class="chart-legend-swatch s2"></span>Away win %</span>
+        </div>
+        <details class="chart-table-toggle">
+          <summary>View as table</summary>
+          <table class="chart-data-table">
+            <thead><tr><th>Team</th><th class="num">Home win %</th><th class="num">Away win %</th></tr></thead>
+            <tbody><tr><td>COL</td><td class="num">71.4%</td><td class="num">60.0%</td></tr><tr><td>BOS</td><td class="num">68.3%</td><td class="num">56.1%</td></tr><tr><td>DAL</td><td class="num">65.9%</td><td class="num">53.7%</td></tr><tr><td>VGK</td><td class="num">62.2%</td><td class="num">55.0%</td></tr><tr><td>TOR</td><td class="num">63.4%</td><td class="num">51.2%</td></tr><tr><td>EDM</td><td class="num">59.5%</td><td class="num">50.0%</td></tr><tr><td>CAR</td><td class="num">60.9%</td><td class="num">48.8%</td></tr><tr><td>NYR</td><td class="num">58.5%</td><td class="num">46.3%</td></tr></tbody>
+          </table>
+        </details>
+      </div>
     </div>
 
     <div class="query-block">
@@ -248,6 +366,58 @@ FROM games g
 WHERE g.game_state = 'OFF'
 GROUP BY game_year, game_month, month_name
 ORDER BY game_year, game_month;</pre>
+
+      <div class="chart-wrap">
+        <div class="chart-eyebrow">Sample Output</div>
+        <p class="chart-title">Average goals per game by month</p>
+        <svg class="viz-svg" viewBox="0 0 640 250" role="img" aria-label="Average goals per game by month, home versus away">
+<line x1="38" y1="196.0" x2="594" y2="196.0" class="viz-grid"/>
+<text x="30" y="199.2" text-anchor="end" class="viz-value-muted">2.6</text>
+<line x1="38" y1="148.0" x2="594" y2="148.0" class="viz-grid"/>
+<text x="30" y="151.2" text-anchor="end" class="viz-value-muted">2.8</text>
+<line x1="38" y1="100.0" x2="594" y2="100.0" class="viz-grid"/>
+<text x="30" y="103.2" text-anchor="end" class="viz-value-muted">3.0</text>
+<line x1="38" y1="52.0" x2="594" y2="52.0" class="viz-grid"/>
+<text x="30" y="55.2" text-anchor="end" class="viz-value-muted">3.2</text>
+<line x1="38" y1="220" x2="594" y2="220" class="viz-axis"/>
+<text x="38.0" y="236" text-anchor="middle" class="viz-label">Oct</text>
+<text x="130.7" y="236" text-anchor="middle" class="viz-label">Nov</text>
+<text x="223.3" y="236" text-anchor="middle" class="viz-label">Dec</text>
+<text x="316.0" y="236" text-anchor="middle" class="viz-label">Jan</text>
+<text x="408.7" y="236" text-anchor="middle" class="viz-label">Feb</text>
+<text x="501.3" y="236" text-anchor="middle" class="viz-label">Mar</text>
+<text x="594.0" y="236" text-anchor="middle" class="viz-label">Apr</text>
+<path d="M38.0,49.6 L130.7,64.0 L223.3,88.0 L316.0,104.8 L408.7,95.2 L501.3,114.4 L594.0,128.8" class="viz-line s1"/>
+<circle cx="38.0" cy="49.6" r="4" class="viz-dot s1" tabindex="0" data-label="Oct · Home" data-value="3.21 avg goals" aria-label="Oct home avg: 3.21 goals/game"></circle>
+<circle cx="130.7" cy="64.0" r="4" class="viz-dot s1" tabindex="0" data-label="Nov · Home" data-value="3.15 avg goals" aria-label="Nov home avg: 3.15 goals/game"></circle>
+<circle cx="223.3" cy="88.0" r="4" class="viz-dot s1" tabindex="0" data-label="Dec · Home" data-value="3.05 avg goals" aria-label="Dec home avg: 3.05 goals/game"></circle>
+<circle cx="316.0" cy="104.8" r="4" class="viz-dot s1" tabindex="0" data-label="Jan · Home" data-value="2.98 avg goals" aria-label="Jan home avg: 2.98 goals/game"></circle>
+<circle cx="408.7" cy="95.2" r="4" class="viz-dot s1" tabindex="0" data-label="Feb · Home" data-value="3.02 avg goals" aria-label="Feb home avg: 3.02 goals/game"></circle>
+<circle cx="501.3" cy="114.4" r="4" class="viz-dot s1" tabindex="0" data-label="Mar · Home" data-value="2.94 avg goals" aria-label="Mar home avg: 2.94 goals/game"></circle>
+<circle cx="594.0" cy="128.8" r="4" class="viz-dot s1" tabindex="0" data-label="Apr · Home" data-value="2.88 avg goals" aria-label="Apr home avg: 2.88 goals/game"></circle>
+<text x="602.0" y="132.0" class="viz-value">2.88</text>
+<path d="M38.0,136.0 L130.7,119.2 L223.3,128.8 L316.0,150.4 L408.7,145.6 L501.3,157.6 L594.0,172.0" class="viz-line s2"/>
+<circle cx="38.0" cy="136.0" r="4" class="viz-dot s2" tabindex="0" data-label="Oct · Away" data-value="2.85 avg goals" aria-label="Oct away avg: 2.85 goals/game"></circle>
+<circle cx="130.7" cy="119.2" r="4" class="viz-dot s2" tabindex="0" data-label="Nov · Away" data-value="2.92 avg goals" aria-label="Nov away avg: 2.92 goals/game"></circle>
+<circle cx="223.3" cy="128.8" r="4" class="viz-dot s2" tabindex="0" data-label="Dec · Away" data-value="2.88 avg goals" aria-label="Dec away avg: 2.88 goals/game"></circle>
+<circle cx="316.0" cy="150.4" r="4" class="viz-dot s2" tabindex="0" data-label="Jan · Away" data-value="2.79 avg goals" aria-label="Jan away avg: 2.79 goals/game"></circle>
+<circle cx="408.7" cy="145.6" r="4" class="viz-dot s2" tabindex="0" data-label="Feb · Away" data-value="2.81 avg goals" aria-label="Feb away avg: 2.81 goals/game"></circle>
+<circle cx="501.3" cy="157.6" r="4" class="viz-dot s2" tabindex="0" data-label="Mar · Away" data-value="2.76 avg goals" aria-label="Mar away avg: 2.76 goals/game"></circle>
+<circle cx="594.0" cy="172.0" r="4" class="viz-dot s2" tabindex="0" data-label="Apr · Away" data-value="2.70 avg goals" aria-label="Apr away avg: 2.70 goals/game"></circle>
+<text x="602.0" y="175.2" class="viz-value">2.70</text>
+</svg>
+        <div class="chart-legend">
+          <span class="chart-legend-item"><span class="chart-legend-swatch s1"></span>Home avg goals</span>
+          <span class="chart-legend-item"><span class="chart-legend-swatch s2"></span>Away avg goals</span>
+        </div>
+        <details class="chart-table-toggle">
+          <summary>View as table</summary>
+          <table class="chart-data-table">
+            <thead><tr><th>Month</th><th class="num">Home avg</th><th class="num">Away avg</th></tr></thead>
+            <tbody><tr><td>Oct</td><td class="num">3.21</td><td class="num">2.85</td></tr><tr><td>Nov</td><td class="num">3.15</td><td class="num">2.92</td></tr><tr><td>Dec</td><td class="num">3.05</td><td class="num">2.88</td></tr><tr><td>Jan</td><td class="num">2.98</td><td class="num">2.79</td></tr><tr><td>Feb</td><td class="num">3.02</td><td class="num">2.81</td></tr><tr><td>Mar</td><td class="num">2.94</td><td class="num">2.76</td></tr><tr><td>Apr</td><td class="num">2.88</td><td class="num">2.70</td></tr></tbody>
+          </table>
+        </details>
+      </div>
     </div>
 
     <div class="case-nav">
