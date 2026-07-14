@@ -863,3 +863,65 @@ footer .foot-links a:hover { color: var(--accent); }
   font-family: var(--mono);
   text-align: right;
 }
+
+/* ---------- About page: experience & skills ---------- */
+
+.exp-item {
+  padding: 26px 0;
+  border-top: 1px solid var(--border);
+}
+.exp-item:first-child { border-top: none; padding-top: 0; }
+
+.exp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.exp-head h3 {
+  font-size: 1.1rem;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+.exp-org {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.exp-date {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+  flex: none;
+}
+
+.exp-bullets {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  color: var(--text-muted);
+  font-size: 0.94rem;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.skill-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.skill-group-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
+.skill-groups .pill-row { margin-top: 0; }

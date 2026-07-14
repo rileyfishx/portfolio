@@ -11,7 +11,10 @@
       "Bash(python3 -c ' *)",
       "Bash(python3)",
       "Bash(grep -n \"chart-wrap\\\\|</pre>\\\\|</div>$\" \"/Users/rileyfisher/Desktop/Portfolio/docs/nhl.html\")",
-      "Bash(pkill -f \"http.server 8745\")"
+      "Bash(pkill -f \"http.server 8745\")",
+      "Bash(ls -la \"/Users/rileyfisher/Desktop/Career/\" 2>&1; mkdir -p \"/Users/rileyfisher/Desktop/Portfolio/docs/assets\" && cp \"/Users/rileyfisher/Desktop/Career/Riley Fisher Resume.pdf\" \"/Users/rileyfisher/Desktop/Portfolio/docs/assets/riley-fisher-resume.pdf\" && ls -la \"/Users/rileyfisher/Desktop/Portfolio/docs/assets/riley-fisher-resume.pdf\")",
+      "Bash(pkill -f \"http.server 8746\")",
+      "Bash(pkill -f \"http.server 8747\")"
     ]
   }
 }
