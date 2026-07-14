@@ -9,7 +9,9 @@
       "Bash(command -v node)",
       "Bash(python3 \"/private/tmp/claude-501/-Users-rileyfisher-Desktop-Portfolio/9f386d30-8d11-402c-b428-258118237cff/scratchpad/validate.py\")",
       "Bash(python3 -c ' *)",
-      "Bash(python3)"
+      "Bash(python3)",
+      "Bash(grep -n \"chart-wrap\\\\|</pre>\\\\|</div>$\" \"/Users/rileyfisher/Desktop/Portfolio/docs/nhl.html\")",
+      "Bash(pkill -f \"http.server 8745\")"
     ]
   }
 }
