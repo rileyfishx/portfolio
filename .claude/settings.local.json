@@ -22,7 +22,8 @@
       "Bash(pkill -f \"http.server 8750\")",
       "Bash(pkill -f \"http.server 8751\")",
       "Bash(pkill -f \"http.server 8752\")",
-      "Bash(pkill -f \"http.server 8753\")"
+      "Bash(pkill -f \"http.server 8753\")",
+      "Bash(pkill -f \"http.server 8754\")"
     ]
   }
 }
