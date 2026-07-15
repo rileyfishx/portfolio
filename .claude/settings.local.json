@@ -16,7 +16,8 @@
       "Bash(pkill -f \"http.server 8746\")",
       "Bash(pkill -f \"http.server 8747\")",
       "Bash(python3 gen_healthcare.py)",
-      "Bash(pkill -f \"http.server 8748\")"
+      "Bash(pkill -f \"http.server 8748\")",
+      "Bash(pkill -f \"http.server 8749\")"
     ]
   }
 }
