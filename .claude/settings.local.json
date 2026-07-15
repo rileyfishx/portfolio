@@ -20,7 +20,9 @@
       "Bash(pkill -f \"http.server 8749\")",
       "Bash(cat /tmp/portfolio_http8.log 2>&1; echo \"---\"; lsof -i :8750 2>&1; ps aux | grep http.server | grep -v grep)",
       "Bash(pkill -f \"http.server 8750\")",
-      "Bash(pkill -f \"http.server 8751\")"
+      "Bash(pkill -f \"http.server 8751\")",
+      "Bash(pkill -f \"http.server 8752\")",
+      "Bash(pkill -f \"http.server 8753\")"
     ]
   }
 }

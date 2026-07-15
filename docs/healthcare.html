@@ -29,19 +29,20 @@
 <header class="case-hero">
   <div class="wrap">
     <span class="eyebrow">Healthcare Analytics</span>
-    <h1>Patient Segmentation Database</h1>
+    <h1>Finding the patients who need attention most.</h1>
     <p class="lede">
-      A normalized MySQL database built around a 2,000-patient dataset.
-      Three lookup tables keep repeated text — state, insurance type,
-      condition — out of the main fact table, and a library of report
-      queries turns the raw rows into segmentation, risk scoring, and
-      cost-analysis views a care team could actually use.
+      Which patients are highest-risk? Does preventive care actually pay
+      off? What does the patient population even look like? This project
+      answers those questions with a database I designed for 2,000 patient
+      records, queried with SQL I wrote to turn raw rows into insights a
+      care team could act on. The technical details are below for anyone
+      who wants them; the short version is in the charts.
     </p>
     <div class="stat-strip">
       <div class="stat-box"><b>4</b><span>Tables</span></div>
       <div class="stat-box"><b>2,000</b><span>Patient Rows</span></div>
       <div class="stat-box"><b>7</b><span>Report Queries</span></div>
-      <div class="stat-box"><b>~25%</b><span>NULL Conditions Handled</span></div>
+      <div class="stat-box"><b>~25%</b><span>Patients With No Condition on File</span></div>
     </div>
   </div>
 </header>
@@ -50,7 +51,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>The Database</h2>
-      <p>One fact table and three small lookup tables — built to avoid repeating the same text thousands of times.</p>
+      <p>The data lives in one main patient table, plus three small reference tables that keep repeated text — like insurance names — from being duplicated 2,000 times over. Here's what each one stores.</p>
     </div>
     <table class="schema-table">
       <thead>
@@ -86,7 +87,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>How It Was Built</h2>
-      <p>Six numbered scripts, run in dependency order, then a Python loader that resolves the raw CSV against the lookup tables.</p>
+      <p>Behind the scenes: six scripts that build the database in order, then a Python script that loads and cleans the patient data.</p>
     </div>
     <ul class="step-list">
       <li>
@@ -117,21 +118,49 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Featured Queries</h2>
-      <p>Three of the seven report scripts, chosen to show a spread of SQL techniques. Each is paired with a chart of what the result set looks like — illustrative sample output, not a live connection to the database.</p>
+      <p>Three real questions this database can answer, shown as charts below. Each one is backed by a SQL query I wrote myself — expand "View the SQL query" under any of them to see it. The charts show illustrative sample output, not a live connection to the database.</p>
     </div>
 
     <div class="query-block">
       <div class="query-head">
         <div class="qnum">Report 01</div>
-        <h3>Full Patient Overview</h3>
-        <p>The master export: one row per patient with every ID code swapped for a human-readable name — what you'd hand to an analyst or drop into Excel. Structurally, every other report builds on this same shape.</p>
+        <h3>What does the patient population actually look like?</h3>
+        <p>A breakdown of how patients are covered — Medicaid, Medicare, Private, or Self-Pay — across the full 2,000-patient population.</p>
       </div>
-      <div class="concept-row">
-        <span class="tag">INNER JOIN vs LEFT JOIN</span>
-        <span class="tag">COALESCE()</span>
-        <span class="tag">CASE WHEN flag</span>
+
+      <div class="chart-wrap">
+        <div class="chart-eyebrow">Sample Output</div>
+        <p class="chart-title">Patients by insurance type &middot; n = 2,000</p>
+        <svg class="viz-svg" viewBox="0 0 640 38" role="img" aria-label="Patients by insurance type, share of 2000 total">
+<path d="M4.0,4.0 L240.2,4.0 L240.2,34.0 L4.0,34.0 Q0.0,34.0 0.0,30.0 L0.0,8.0 Q0.0,4.0 4.0,4.0 Z" class="viz-seg f1" style="--i:0" data-label="Private" data-value="760 patients (38%)" tabindex="0" aria-label="Private: 760 patients, 38 percent"></path>
+<text x="120.1" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:0">38%</text>
+<path d="M243.2,4.0 L438.6,4.0 L438.6,34.0 L243.2,34.0 Z" class="viz-seg f2" style="--i:1" data-label="Medicare" data-value="620 patients (31%)" tabindex="0" aria-label="Medicare: 620 patients, 31 percent"></path>
+<text x="340.9" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:1">31%</text>
+<path d="M441.6,4.0 L579.4,4.0 L579.4,34.0 L441.6,34.0 Z" class="viz-seg f3" style="--i:2" data-label="Medicaid" data-value="440 patients (22%)" tabindex="0" aria-label="Medicaid: 440 patients, 22 percent"></path>
+<text x="510.5" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:2">22%</text>
+<path d="M582.4,4.0 L636.0,4.0 Q640.0,4.0 640.0,8.0 L640.0,30.0 Q640.0,34.0 636.0,34.0 L582.4,34.0 Z" class="viz-seg f4" style="--i:3" data-label="Self-Pay" data-value="180 patients (9%)" tabindex="0" aria-label="Self-Pay: 180 patients, 9 percent"></path>
+<text x="611.2" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:3">9%</text>
+</svg>
+        <div class="chart-legend legend-4"><span class="chart-legend-item"><span class="chart-legend-swatch f1"></span>Private &middot; 760 (38%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f2"></span>Medicare &middot; 620 (31%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f3"></span>Medicaid &middot; 440 (22%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f4"></span>Self-Pay &middot; 180 (9%)</span></div>
+        <p class="chart-takeaway"><b>Takeaway:</b> nearly 7 in 10 patients are covered by Private insurance or Medicare, while Self-Pay patients — often the most vulnerable — make up just 9% of the population.</p>
+        <details class="chart-table-toggle">
+          <summary>View as table</summary>
+          <table class="chart-data-table">
+            <thead><tr><th>Insurance Type</th><th class="num">Patients</th><th class="num">Share</th></tr></thead>
+            <tbody><tr><td>Private</td><td class="num">760</td><td class="num">38.0%</td></tr><tr><td>Medicare</td><td class="num">620</td><td class="num">31.0%</td></tr><tr><td>Medicaid</td><td class="num">440</td><td class="num">22.0%</td></tr><tr><td>Self-Pay</td><td class="num">180</td><td class="num">9.0%</td></tr></tbody>
+          </table>
+        </details>
       </div>
-      <pre class="sql">USE patient_data;
+
+      <details class="sql-toggle">
+        <summary>View the SQL query behind this chart</summary>
+        <p class="sql-toggle-desc">The master export: one row per patient with every ID code swapped for a human-readable name — what you'd hand to an analyst or drop into Excel. Structurally, every other report builds on this same shape.</p>
+        <div class="concept-row">
+          <span class="tag">INNER JOIN vs LEFT JOIN</span>
+          <span class="tag">COALESCE()</span>
+          <span class="tag">CASE WHEN flag</span>
+        </div>
+        <pre class="sql">USE patient_data;
 
 SELECT
     p.patient_id,
@@ -158,74 +187,15 @@ LEFT JOIN conditions  c  ON c.condition_id        = p.condition_id
 -- LEFT JOIN for conditions because ~25% of patients have no condition (NULL)
 -- an INNER JOIN would silently drop those 495 patients from the results
 ORDER BY p.patient_id;</pre>
-
-      <div class="chart-wrap">
-        <div class="chart-eyebrow">Sample Output</div>
-        <p class="chart-title">Patients by insurance type &middot; n = 2,000</p>
-        <svg class="viz-svg" viewBox="0 0 640 38" role="img" aria-label="Patients by insurance type, share of 2000 total">
-<path d="M4.0,4.0 L240.2,4.0 L240.2,34.0 L4.0,34.0 Q0.0,34.0 0.0,30.0 L0.0,8.0 Q0.0,4.0 4.0,4.0 Z" class="viz-seg f1" style="--i:0" data-label="Private" data-value="760 patients (38%)" tabindex="0" aria-label="Private: 760 patients, 38 percent"></path>
-<text x="120.1" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:0">38%</text>
-<path d="M243.2,4.0 L438.6,4.0 L438.6,34.0 L243.2,34.0 Z" class="viz-seg f2" style="--i:1" data-label="Medicare" data-value="620 patients (31%)" tabindex="0" aria-label="Medicare: 620 patients, 31 percent"></path>
-<text x="340.9" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:1">31%</text>
-<path d="M441.6,4.0 L579.4,4.0 L579.4,34.0 L441.6,34.0 Z" class="viz-seg f3" style="--i:2" data-label="Medicaid" data-value="440 patients (22%)" tabindex="0" aria-label="Medicaid: 440 patients, 22 percent"></path>
-<text x="510.5" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:2">22%</text>
-<path d="M582.4,4.0 L636.0,4.0 Q640.0,4.0 640.0,8.0 L640.0,30.0 Q640.0,34.0 636.0,34.0 L582.4,34.0 Z" class="viz-seg f4" style="--i:3" data-label="Self-Pay" data-value="180 patients (9%)" tabindex="0" aria-label="Self-Pay: 180 patients, 9 percent"></path>
-<text x="611.2" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:3">9%</text>
-</svg>
-        <div class="chart-legend legend-4"><span class="chart-legend-item"><span class="chart-legend-swatch f1"></span>Private &middot; 760 (38%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f2"></span>Medicare &middot; 620 (31%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f3"></span>Medicaid &middot; 440 (22%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f4"></span>Self-Pay &middot; 180 (9%)</span></div>
-        <details class="chart-table-toggle">
-          <summary>View as table</summary>
-          <table class="chart-data-table">
-            <thead><tr><th>Insurance Type</th><th class="num">Patients</th><th class="num">Share</th></tr></thead>
-            <tbody><tr><td>Private</td><td class="num">760</td><td class="num">38.0%</td></tr><tr><td>Medicare</td><td class="num">620</td><td class="num">31.0%</td></tr><tr><td>Medicaid</td><td class="num">440</td><td class="num">22.0%</td></tr><tr><td>Self-Pay</td><td class="num">180</td><td class="num">9.0%</td></tr></tbody>
-          </table>
-        </details>
-      </div>
+      </details>
     </div>
 
     <div class="query-block">
       <div class="query-head">
         <div class="qnum">Report 06</div>
-        <h3>High-Risk Patient Identification</h3>
-        <p>Patients who meet several "high risk" criteria at once — chronic condition count, BMI, and time since last visit — combined into a simple additive risk score so a care team can prioritize outreach.</p>
+        <h3>Which patients should a care team follow up with first?</h3>
+        <p>Patients flagged as high-risk — high BMI, multiple chronic conditions, and no visit in 6+ months — plotted so the most urgent cases stand out.</p>
       </div>
-      <div class="concept-row">
-        <span class="tag">Multi-condition WHERE</span>
-        <span class="tag">Computed risk score</span>
-        <span class="tag">Sortable ranking</span>
-      </div>
-      <pre class="sql">USE patient_data;
-
-SELECT
-    p.patient_id,
-    p.age,
-    p.gender,
-    st.state_code,
-    p.city,
-    p.bmi,
-    p.num_chronic_conditions,
-    COALESCE(c.condition_name, 'None on record') AS primary_condition,
-    it.type_name                                 AS insurance_type,
-    p.annual_visits,
-    p.avg_billing_amount,
-    p.last_visit_date,
-    p.days_since_last_visit,
-    -- a simple risk score: 1 point per condition + 1 if BMI > 30 + 1 if long gap
-    (
-        p.num_chronic_conditions
-        + CASE WHEN p.bmi > 30 THEN 1 ELSE 0 END
-        + CASE WHEN p.days_since_last_visit > 180 THEN 1 ELSE 0 END
-        + CASE WHEN p.annual_visits < 2 THEN 1 ELSE 0 END
-    )                                            AS risk_score
-FROM patients p
-JOIN states          st ON st.state_id          = p.state_id
-JOIN insurance_types it ON it.insurance_type_id  = p.insurance_type_id
-LEFT JOIN conditions  c  ON c.condition_id        = p.condition_id
-WHERE
-    p.num_chronic_conditions >= 3
-    AND p.bmi > 30
-    AND p.days_since_last_visit > 180
-ORDER BY risk_score DESC, p.days_since_last_visit DESC;</pre>
 
       <div class="chart-wrap">
         <div class="chart-eyebrow">Sample Output</div>
@@ -267,6 +237,7 @@ ORDER BY risk_score DESC, p.days_since_last_visit DESC;</pre>
 <circle cx="229.9" cy="96.9" r="11.4" class="viz-bubble" style="--i:12; --op:0.73" data-label="P-1810" data-value="BMI 33 &middot; 275d since visit &middot; 4 conditions &middot; risk 7" tabindex="0" aria-label="P-1810: BMI 33, 275 days since last visit, 4 chronic conditions, risk score 7"></circle>
 </svg>
         <p style="font-size:0.8rem; color:var(--text-faint); margin:14px 0 0;">Bubble size = chronic condition count &middot; opacity = composite risk score</p>
+        <p class="chart-takeaway"><b>Takeaway:</b> the darkest, largest bubbles in the upper-right — patients with more chronic conditions and the longest gaps since their last visit — are the ones a care team should reach out to first.</p>
         <details class="chart-table-toggle">
           <summary>View as table</summary>
           <table class="chart-data-table">
@@ -275,20 +246,103 @@ ORDER BY risk_score DESC, p.days_since_last_visit DESC;</pre>
           </table>
         </details>
       </div>
+
+      <details class="sql-toggle">
+        <summary>View the SQL query behind this chart</summary>
+        <p class="sql-toggle-desc">Patients who meet several "high risk" criteria at once — chronic condition count, BMI, and time since last visit — combined into a simple additive risk score so a care team can prioritize outreach.</p>
+        <div class="concept-row">
+          <span class="tag">Multi-condition WHERE</span>
+          <span class="tag">Computed risk score</span>
+          <span class="tag">Sortable ranking</span>
+        </div>
+        <pre class="sql">USE patient_data;
+
+SELECT
+    p.patient_id,
+    p.age,
+    p.gender,
+    st.state_code,
+    p.city,
+    p.bmi,
+    p.num_chronic_conditions,
+    COALESCE(c.condition_name, 'None on record') AS primary_condition,
+    it.type_name                                 AS insurance_type,
+    p.annual_visits,
+    p.avg_billing_amount,
+    p.last_visit_date,
+    p.days_since_last_visit,
+    -- a simple risk score: 1 point per condition + 1 if BMI > 30 + 1 if long gap
+    (
+        p.num_chronic_conditions
+        + CASE WHEN p.bmi > 30 THEN 1 ELSE 0 END
+        + CASE WHEN p.days_since_last_visit > 180 THEN 1 ELSE 0 END
+        + CASE WHEN p.annual_visits < 2 THEN 1 ELSE 0 END
+    )                                            AS risk_score
+FROM patients p
+JOIN states          st ON st.state_id          = p.state_id
+JOIN insurance_types it ON it.insurance_type_id  = p.insurance_type_id
+LEFT JOIN conditions  c  ON c.condition_id        = p.condition_id
+WHERE
+    p.num_chronic_conditions >= 3
+    AND p.bmi > 30
+    AND p.days_since_last_visit > 180
+ORDER BY risk_score DESC, p.days_since_last_visit DESC;</pre>
+      </details>
     </div>
 
     <div class="query-block">
       <div class="query-head">
         <div class="qnum">Report 07</div>
-        <h3>Preventive Care Adoption Analysis</h3>
-        <p>Tests a real population-health hypothesis — does preventive care actually cost less? — first as a head-to-head group comparison, then broken down by insurance type.</p>
+        <h3>Does preventive care actually get used?</h3>
+        <p>The share of patients using preventive care, broken out by insurance type, compared against the population average.</p>
       </div>
-      <div class="concept-row">
-        <span class="tag">GROUP BY comparison</span>
-        <span class="tag">Conditional AVG(CASE …)</span>
-        <span class="tag">Multi-query report file</span>
+
+      <div class="chart-wrap">
+        <div class="chart-eyebrow">Sample Output</div>
+        <p class="chart-title">Preventive care adoption rate by insurance type</p>
+        <svg class="viz-svg" viewBox="0 0 640 198" role="img" aria-label="Preventive care adoption rate by insurance type versus population average">
+<line x1="462.4" y1="12" x2="462.4" y2="192" class="viz-avg-line"/>
+<text x="462.4" y="8" text-anchor="middle" class="viz-avg-label">Population avg 53%</text>
+<text x="76" y="39.5" text-anchor="end" class="viz-label">Medicare</text>
+<line x1="90.0" y1="36.0" x2="519.8" y2="36.0" class="viz-stem" style="--i:0; --len:429.8"/>
+<circle cx="519.8" cy="36.0" r="6" class="viz-lolli above" style="--i:0" data-label="Medicare" data-value="61.4% preventive care" tabindex="0" aria-label="Medicare: 61.4 percent preventive care adoption"></circle>
+<text x="531.8" y="39.5" class="viz-value">61%</text>
+<text x="76" y="83.5" text-anchor="end" class="viz-label">Private</text>
+<line x1="90.0" y1="80.0" x2="469.4" y2="80.0" class="viz-stem" style="--i:1; --len:379.4"/>
+<circle cx="469.4" cy="80.0" r="6" class="viz-lolli above" style="--i:1" data-label="Private" data-value="54.2% preventive care" tabindex="0" aria-label="Private: 54.2 percent preventive care adoption"></circle>
+<text x="481.4" y="83.5" class="viz-value">54%</text>
+<text x="76" y="127.5" text-anchor="end" class="viz-label">Medicaid</text>
+<line x1="90.0" y1="124.0" x2="424.6" y2="124.0" class="viz-stem" style="--i:2; --len:334.6"/>
+<circle cx="424.6" cy="124.0" r="6" class="viz-lolli below" style="--i:2" data-label="Medicaid" data-value="47.8% preventive care" tabindex="0" aria-label="Medicaid: 47.8 percent preventive care adoption"></circle>
+<text x="436.6" y="127.5" class="viz-value">48%</text>
+<text x="76" y="171.5" text-anchor="end" class="viz-label">Self-Pay</text>
+<line x1="90.0" y1="168.0" x2="324.5" y2="168.0" class="viz-stem" style="--i:3; --len:234.5"/>
+<circle cx="324.5" cy="168.0" r="6" class="viz-lolli below" style="--i:3" data-label="Self-Pay" data-value="33.5% preventive care" tabindex="0" aria-label="Self-Pay: 33.5 percent preventive care adoption"></circle>
+<text x="336.5" y="171.5" class="viz-value">34%</text>
+</svg>
+        <div class="chart-legend">
+          <span class="chart-legend-item"><span class="chart-legend-swatch s1"></span>Above population average</span>
+          <span class="chart-legend-item"><span class="chart-legend-swatch s2"></span>Below population average</span>
+        </div>
+        <p class="chart-takeaway"><b>Takeaway:</b> Medicare patients use preventive care almost twice as often as Self-Pay patients (61% vs. 34%) — a signal that cost, not awareness, may be the biggest barrier.</p>
+        <details class="chart-table-toggle">
+          <summary>View as table</summary>
+          <table class="chart-data-table">
+            <thead><tr><th>Insurance Type</th><th class="num">Preventive Care %</th><th class="num">Vs. Average</th></tr></thead>
+            <tbody><tr><td>Medicare</td><td class="num">61.4%</td><td class="num">+8.2 pts</td></tr><tr><td>Private</td><td class="num">54.2%</td><td class="num">+1.0 pts</td></tr><tr><td>Medicaid</td><td class="num">47.8%</td><td class="num">-5.4 pts</td></tr><tr><td>Self-Pay</td><td class="num">33.5%</td><td class="num">-19.7 pts</td></tr></tbody>
+          </table>
+        </details>
       </div>
-      <pre class="sql">USE patient_data;
+
+      <details class="sql-toggle">
+        <summary>View the SQL query behind this chart</summary>
+        <p class="sql-toggle-desc">Tests a real population-health hypothesis — does preventive care actually cost less? — first as a head-to-head group comparison, then broken down by insurance type.</p>
+        <div class="concept-row">
+          <span class="tag">GROUP BY comparison</span>
+          <span class="tag">Conditional AVG(CASE …)</span>
+          <span class="tag">Multi-query report file</span>
+        </div>
+        <pre class="sql">USE patient_data;
 
 -- Part 1: head-to-head comparison of preventive vs non-preventive
 SELECT
@@ -327,42 +381,7 @@ FROM patients p
 JOIN insurance_types it ON it.insurance_type_id = p.insurance_type_id
 GROUP BY it.insurance_type_id, it.type_name
 ORDER BY preventive_care_pct DESC;</pre>
-
-      <div class="chart-wrap">
-        <div class="chart-eyebrow">Sample Output</div>
-        <p class="chart-title">Preventive care adoption rate by insurance type</p>
-        <svg class="viz-svg" viewBox="0 0 640 198" role="img" aria-label="Preventive care adoption rate by insurance type versus population average">
-<line x1="462.4" y1="12" x2="462.4" y2="192" class="viz-avg-line"/>
-<text x="462.4" y="8" text-anchor="middle" class="viz-avg-label">Population avg 53%</text>
-<text x="76" y="39.5" text-anchor="end" class="viz-label">Medicare</text>
-<line x1="90.0" y1="36.0" x2="519.8" y2="36.0" class="viz-stem" style="--i:0; --len:429.8"/>
-<circle cx="519.8" cy="36.0" r="6" class="viz-lolli above" style="--i:0" data-label="Medicare" data-value="61.4% preventive care" tabindex="0" aria-label="Medicare: 61.4 percent preventive care adoption"></circle>
-<text x="531.8" y="39.5" class="viz-value">61%</text>
-<text x="76" y="83.5" text-anchor="end" class="viz-label">Private</text>
-<line x1="90.0" y1="80.0" x2="469.4" y2="80.0" class="viz-stem" style="--i:1; --len:379.4"/>
-<circle cx="469.4" cy="80.0" r="6" class="viz-lolli above" style="--i:1" data-label="Private" data-value="54.2% preventive care" tabindex="0" aria-label="Private: 54.2 percent preventive care adoption"></circle>
-<text x="481.4" y="83.5" class="viz-value">54%</text>
-<text x="76" y="127.5" text-anchor="end" class="viz-label">Medicaid</text>
-<line x1="90.0" y1="124.0" x2="424.6" y2="124.0" class="viz-stem" style="--i:2; --len:334.6"/>
-<circle cx="424.6" cy="124.0" r="6" class="viz-lolli below" style="--i:2" data-label="Medicaid" data-value="47.8% preventive care" tabindex="0" aria-label="Medicaid: 47.8 percent preventive care adoption"></circle>
-<text x="436.6" y="127.5" class="viz-value">48%</text>
-<text x="76" y="171.5" text-anchor="end" class="viz-label">Self-Pay</text>
-<line x1="90.0" y1="168.0" x2="324.5" y2="168.0" class="viz-stem" style="--i:3; --len:234.5"/>
-<circle cx="324.5" cy="168.0" r="6" class="viz-lolli below" style="--i:3" data-label="Self-Pay" data-value="33.5% preventive care" tabindex="0" aria-label="Self-Pay: 33.5 percent preventive care adoption"></circle>
-<text x="336.5" y="171.5" class="viz-value">34%</text>
-</svg>
-        <div class="chart-legend">
-          <span class="chart-legend-item"><span class="chart-legend-swatch s1"></span>Above population average</span>
-          <span class="chart-legend-item"><span class="chart-legend-swatch s2"></span>Below population average</span>
-        </div>
-        <details class="chart-table-toggle">
-          <summary>View as table</summary>
-          <table class="chart-data-table">
-            <thead><tr><th>Insurance Type</th><th class="num">Preventive Care %</th><th class="num">Vs. Average</th></tr></thead>
-            <tbody><tr><td>Medicare</td><td class="num">61.4%</td><td class="num">+8.2 pts</td></tr><tr><td>Private</td><td class="num">54.2%</td><td class="num">+1.0 pts</td></tr><tr><td>Medicaid</td><td class="num">47.8%</td><td class="num">-5.4 pts</td></tr><tr><td>Self-Pay</td><td class="num">33.5%</td><td class="num">-19.7 pts</td></tr></tbody>
-          </table>
-        </details>
-      </div>
+      </details>
     </div>
 
     <div class="case-nav">

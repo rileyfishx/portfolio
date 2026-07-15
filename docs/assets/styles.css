@@ -834,6 +834,18 @@ footer .foot-links a:hover { color: var(--accent); }
 }
 .chart-wrap > * { position: relative; z-index: 1; }
 
+.chart-takeaway {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+.chart-takeaway b { color: var(--accent-strong); }
+
 .chart-table-toggle { margin-top: 18px; }
 
 .chart-table-toggle summary {
@@ -846,6 +858,31 @@ footer .foot-links a:hover { color: var(--accent); }
 .chart-table-toggle summary::-webkit-details-marker { display: none; }
 .chart-table-toggle summary::before { content: "▸ "; }
 .chart-table-toggle[open] summary::before { content: "▾ "; }
+
+.sql-toggle {
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+
+.sql-toggle summary {
+  cursor: pointer;
+  padding: 18px 24px;
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+  list-style: none;
+  user-select: none;
+}
+.sql-toggle summary::-webkit-details-marker { display: none; }
+.sql-toggle summary::before { content: "▸ "; }
+.sql-toggle[open] summary::before { content: "▾ "; }
+
+.sql-toggle-desc {
+  padding: 0 24px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
 
 .chart-data-table {
   margin-top: 12px;
