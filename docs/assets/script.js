@@ -14,31 +14,6 @@
     });
   });
 
-  document.querySelectorAll("[data-contact-toggle]").forEach(function (btn) {
-    var wrap = btn.closest(".nav-contact");
-    function close() {
-      wrap.classList.remove("open");
-      btn.setAttribute("aria-expanded", "false");
-    }
-    function open() {
-      wrap.classList.add("open");
-      btn.setAttribute("aria-expanded", "true");
-    }
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      wrap.classList.contains("open") ? close() : open();
-    });
-    document.addEventListener("click", function (e) {
-      if (!wrap.contains(e.target)) close();
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { close(); btn.focus(); }
-    });
-    wrap.addEventListener("focusout", function (e) {
-      if (!wrap.contains(e.relatedTarget)) close();
-    });
-  });
-
   var KEYWORDS = ["SELECT","FROM","WHERE","JOIN","LEFT","RIGHT","INNER","OUTER","ON",
     "GROUP BY","GROUP","BY","ORDER","PARTITION","AS","CASE","WHEN","THEN","ELSE","END",
     "WITH","OVER","AND","OR","NOT","NULL","DESC","ASC","IN","BETWEEN","LIKE","USE",
