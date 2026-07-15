@@ -14,7 +14,9 @@
       "Bash(pkill -f \"http.server 8745\")",
       "Bash(ls -la \"/Users/rileyfisher/Desktop/Career/\" 2>&1; mkdir -p \"/Users/rileyfisher/Desktop/Portfolio/docs/assets\" && cp \"/Users/rileyfisher/Desktop/Career/Riley Fisher Resume.pdf\" \"/Users/rileyfisher/Desktop/Portfolio/docs/assets/riley-fisher-resume.pdf\" && ls -la \"/Users/rileyfisher/Desktop/Portfolio/docs/assets/riley-fisher-resume.pdf\")",
       "Bash(pkill -f \"http.server 8746\")",
-      "Bash(pkill -f \"http.server 8747\")"
+      "Bash(pkill -f \"http.server 8747\")",
+      "Bash(python3 gen_healthcare.py)",
+      "Bash(pkill -f \"http.server 8748\")"
     ]
   }
 }

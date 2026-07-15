@@ -117,7 +117,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Featured Queries</h2>
-      <p>Three of the seven report scripts, chosen to show a spread of SQL techniques.</p>
+      <p>Three of the seven report scripts, chosen to show a spread of SQL techniques. Each is paired with a chart of what the result set looks like — illustrative sample output, not a live connection to the database.</p>
     </div>
 
     <div class="query-block">
@@ -158,6 +158,29 @@ LEFT JOIN conditions  c  ON c.condition_id        = p.condition_id
 -- LEFT JOIN for conditions because ~25% of patients have no condition (NULL)
 -- an INNER JOIN would silently drop those 495 patients from the results
 ORDER BY p.patient_id;</pre>
+
+      <div class="chart-wrap">
+        <div class="chart-eyebrow">Sample Output</div>
+        <p class="chart-title">Patients by insurance type &middot; n = 2,000</p>
+        <svg class="viz-svg" viewBox="0 0 640 38" role="img" aria-label="Patients by insurance type, share of 2000 total">
+<path d="M4.0,4.0 L240.2,4.0 L240.2,34.0 L4.0,34.0 Q0.0,34.0 0.0,30.0 L0.0,8.0 Q0.0,4.0 4.0,4.0 Z" class="viz-seg f1" style="--i:0" data-label="Private" data-value="760 patients (38%)" tabindex="0" aria-label="Private: 760 patients, 38 percent"></path>
+<text x="120.1" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:0">38%</text>
+<path d="M243.2,4.0 L438.6,4.0 L438.6,34.0 L243.2,34.0 Z" class="viz-seg f2" style="--i:1" data-label="Medicare" data-value="620 patients (31%)" tabindex="0" aria-label="Medicare: 620 patients, 31 percent"></path>
+<text x="340.9" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:1">31%</text>
+<path d="M441.6,4.0 L579.4,4.0 L579.4,34.0 L441.6,34.0 Z" class="viz-seg f3" style="--i:2" data-label="Medicaid" data-value="440 patients (22%)" tabindex="0" aria-label="Medicaid: 440 patients, 22 percent"></path>
+<text x="510.5" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:2">22%</text>
+<path d="M582.4,4.0 L636.0,4.0 Q640.0,4.0 640.0,8.0 L640.0,30.0 Q640.0,34.0 636.0,34.0 L582.4,34.0 Z" class="viz-seg f4" style="--i:3" data-label="Self-Pay" data-value="180 patients (9%)" tabindex="0" aria-label="Self-Pay: 180 patients, 9 percent"></path>
+<text x="611.2" y="22.8" text-anchor="middle" class="viz-seg-label" style="--i:3">9%</text>
+</svg>
+        <div class="chart-legend legend-4"><span class="chart-legend-item"><span class="chart-legend-swatch f1"></span>Private &middot; 760 (38%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f2"></span>Medicare &middot; 620 (31%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f3"></span>Medicaid &middot; 440 (22%)</span><span class="chart-legend-item"><span class="chart-legend-swatch f4"></span>Self-Pay &middot; 180 (9%)</span></div>
+        <details class="chart-table-toggle">
+          <summary>View as table</summary>
+          <table class="chart-data-table">
+            <thead><tr><th>Insurance Type</th><th class="num">Patients</th><th class="num">Share</th></tr></thead>
+            <tbody><tr><td>Private</td><td class="num">760</td><td class="num">38.0%</td></tr><tr><td>Medicare</td><td class="num">620</td><td class="num">31.0%</td></tr><tr><td>Medicaid</td><td class="num">440</td><td class="num">22.0%</td></tr><tr><td>Self-Pay</td><td class="num">180</td><td class="num">9.0%</td></tr></tbody>
+          </table>
+        </details>
+      </div>
     </div>
 
     <div class="query-block">
@@ -203,6 +226,55 @@ WHERE
     AND p.bmi > 30
     AND p.days_since_last_visit > 180
 ORDER BY risk_score DESC, p.days_since_last_visit DESC;</pre>
+
+      <div class="chart-wrap">
+        <div class="chart-eyebrow">Sample Output</div>
+        <p class="chart-title">High-risk patients: BMI vs. days since last visit</p>
+        <svg class="viz-svg" viewBox="0 0 640 300" role="img" aria-label="High risk patients by BMI, days since last visit, and chronic condition count">
+<line x1="114.2" y1="16" x2="114.2" y2="266" class="viz-grid"/>
+<text x="114.2" y="282" text-anchor="middle" class="viz-label">30</text>
+<line x1="258.8" y1="16" x2="258.8" y2="266" class="viz-grid"/>
+<text x="258.8" y="282" text-anchor="middle" class="viz-label">34</text>
+<line x1="403.2" y1="16" x2="403.2" y2="266" class="viz-grid"/>
+<text x="403.2" y="282" text-anchor="middle" class="viz-label">38</text>
+<line x1="547.8" y1="16" x2="547.8" y2="266" class="viz-grid"/>
+<text x="547.8" y="282" text-anchor="middle" class="viz-label">42</text>
+<line x1="42" y1="236.6" x2="620" y2="236.6" class="viz-grid"/>
+<text x="34" y="239.8" text-anchor="end" class="viz-value-muted">180</text>
+<line x1="42" y1="177.8" x2="620" y2="177.8" class="viz-grid"/>
+<text x="34" y="181.0" text-anchor="end" class="viz-value-muted">220</text>
+<line x1="42" y1="118.9" x2="620" y2="118.9" class="viz-grid"/>
+<text x="34" y="122.1" text-anchor="end" class="viz-value-muted">260</text>
+<line x1="42" y1="60.1" x2="620" y2="60.1" class="viz-grid"/>
+<text x="34" y="63.3" text-anchor="end" class="viz-value-muted">300</text>
+<text x="331.0" y="296" text-anchor="middle" class="viz-label">BMI</text>
+<line x1="114.2" y1="16" x2="114.2" y2="266" class="viz-ref-line"/>
+<text x="119.2" y="27" class="viz-ref-label">BMI 30 threshold</text>
+<line x1="42" y1="236.6" x2="620" y2="236.6" class="viz-ref-line"/>
+<text x="615.0" y="231.6" text-anchor="end" class="viz-ref-label">180-day threshold</text>
+<circle cx="157.6" cy="229.2" r="9.8" class="viz-bubble" style="--i:0; --op:0.45" data-label="P-1042" data-value="BMI 31 &middot; 185d since visit &middot; 3 conditions &middot; risk 5" tabindex="0" aria-label="P-1042: BMI 31, 185 days since last visit, 3 chronic conditions, risk score 5"></circle>
+<circle cx="251.5" cy="192.5" r="9.8" class="viz-bubble" style="--i:1; --op:0.59" data-label="P-1187" data-value="BMI 34 &middot; 210d since visit &middot; 3 conditions &middot; risk 6" tabindex="0" aria-label="P-1187: BMI 34, 210 days since last visit, 3 chronic conditions, risk score 6"></circle>
+<circle cx="132.3" cy="148.4" r="11.4" class="viz-bubble" style="--i:2; --op:0.59" data-label="P-1256" data-value="BMI 30 &middot; 240d since visit &middot; 4 conditions &middot; risk 6" tabindex="0" aria-label="P-1256: BMI 30, 240 days since last visit, 4 chronic conditions, risk score 6"></circle>
+<circle cx="298.5" cy="214.5" r="11.4" class="viz-bubble" style="--i:3; --op:0.73" data-label="P-1309" data-value="BMI 35 &middot; 195d since visit &middot; 4 conditions &middot; risk 7" tabindex="0" aria-label="P-1309: BMI 35, 195 days since last visit, 4 chronic conditions, risk score 7"></circle>
+<circle cx="417.7" cy="111.6" r="13.0" class="viz-bubble" style="--i:4; --op:0.73" data-label="P-1364" data-value="BMI 38 &middot; 265d since visit &middot; 5 conditions &middot; risk 7" tabindex="0" aria-label="P-1364: BMI 38, 265 days since last visit, 5 chronic conditions, risk score 7"></circle>
+<circle cx="211.8" cy="52.8" r="9.8" class="viz-bubble" style="--i:5; --op:0.59" data-label="P-1418" data-value="BMI 33 &middot; 305d since visit &middot; 3 conditions &middot; risk 6" tabindex="0" aria-label="P-1418: BMI 33, 305 days since last visit, 3 chronic conditions, risk score 6"></circle>
+<circle cx="482.7" cy="177.8" r="13.0" class="viz-bubble" style="--i:6; --op:0.86" data-label="P-1477" data-value="BMI 40 &middot; 220d since visit &middot; 5 conditions &middot; risk 8" tabindex="0" aria-label="P-1477: BMI 40, 220 days since last visit, 5 chronic conditions, risk score 8"></circle>
+<circle cx="363.5" cy="133.6" r="14.6" class="viz-bubble" style="--i:7; --op:0.86" data-label="P-1523" data-value="BMI 37 &middot; 250d since visit &middot; 6 conditions &middot; risk 8" tabindex="0" aria-label="P-1523: BMI 37, 250 days since last visit, 6 chronic conditions, risk score 8"></circle>
+<circle cx="258.8" cy="221.9" r="11.4" class="viz-bubble" style="--i:8; --op:0.59" data-label="P-1588" data-value="BMI 34 &middot; 190d since visit &middot; 4 conditions &middot; risk 6" tabindex="0" aria-label="P-1588: BMI 34, 190 days since last visit, 4 chronic conditions, risk score 6"></circle>
+<circle cx="551.4" cy="74.8" r="14.6" class="viz-bubble" style="--i:9; --op:1.00" data-label="P-1642" data-value="BMI 42 &middot; 290d since visit &middot; 6 conditions &middot; risk 9" tabindex="0" aria-label="P-1642: BMI 42, 290 days since last visit, 6 chronic conditions, risk score 9"></circle>
+<circle cx="179.3" cy="38.1" r="9.8" class="viz-bubble" style="--i:10; --op:0.59" data-label="P-1699" data-value="BMI 32 &middot; 315d since visit &middot; 3 conditions &middot; risk 6" tabindex="0" aria-label="P-1699: BMI 32, 315 days since last visit, 3 chronic conditions, risk score 6"></circle>
+<circle cx="439.4" cy="155.7" r="13.0" class="viz-bubble" style="--i:11; --op:0.86" data-label="P-1755" data-value="BMI 39 &middot; 235d since visit &middot; 5 conditions &middot; risk 8" tabindex="0" aria-label="P-1755: BMI 39, 235 days since last visit, 5 chronic conditions, risk score 8"></circle>
+<circle cx="229.9" cy="96.9" r="11.4" class="viz-bubble" style="--i:12; --op:0.73" data-label="P-1810" data-value="BMI 33 &middot; 275d since visit &middot; 4 conditions &middot; risk 7" tabindex="0" aria-label="P-1810: BMI 33, 275 days since last visit, 4 chronic conditions, risk score 7"></circle>
+</svg>
+        <p style="font-size:0.8rem; color:var(--text-faint); margin:14px 0 0;">Bubble size = chronic condition count &middot; opacity = composite risk score</p>
+        <details class="chart-table-toggle">
+          <summary>View as table</summary>
+          <table class="chart-data-table">
+            <thead><tr><th>Patient</th><th class="num">BMI</th><th class="num">Days Since Visit</th><th class="num">Chronic Conditions</th><th class="num">Risk Score</th></tr></thead>
+            <tbody><tr><td>P-1042</td><td class="num">31.2</td><td class="num">185</td><td class="num">3</td><td class="num">5</td></tr><tr><td>P-1187</td><td class="num">33.8</td><td class="num">210</td><td class="num">3</td><td class="num">6</td></tr><tr><td>P-1256</td><td class="num">30.5</td><td class="num">240</td><td class="num">4</td><td class="num">6</td></tr><tr><td>P-1309</td><td class="num">35.1</td><td class="num">195</td><td class="num">4</td><td class="num">7</td></tr><tr><td>P-1364</td><td class="num">38.4</td><td class="num">265</td><td class="num">5</td><td class="num">7</td></tr><tr><td>P-1418</td><td class="num">32.7</td><td class="num">305</td><td class="num">3</td><td class="num">6</td></tr><tr><td>P-1477</td><td class="num">40.2</td><td class="num">220</td><td class="num">5</td><td class="num">8</td></tr><tr><td>P-1523</td><td class="num">36.9</td><td class="num">250</td><td class="num">6</td><td class="num">8</td></tr><tr><td>P-1588</td><td class="num">34.0</td><td class="num">190</td><td class="num">4</td><td class="num">6</td></tr><tr><td>P-1642</td><td class="num">42.1</td><td class="num">290</td><td class="num">6</td><td class="num">9</td></tr><tr><td>P-1699</td><td class="num">31.8</td><td class="num">315</td><td class="num">3</td><td class="num">6</td></tr><tr><td>P-1755</td><td class="num">39.0</td><td class="num">235</td><td class="num">5</td><td class="num">8</td></tr><tr><td>P-1810</td><td class="num">33.2</td><td class="num">275</td><td class="num">4</td><td class="num">7</td></tr></tbody>
+          </table>
+        </details>
+      </div>
     </div>
 
     <div class="query-block">
@@ -255,6 +327,42 @@ FROM patients p
 JOIN insurance_types it ON it.insurance_type_id = p.insurance_type_id
 GROUP BY it.insurance_type_id, it.type_name
 ORDER BY preventive_care_pct DESC;</pre>
+
+      <div class="chart-wrap">
+        <div class="chart-eyebrow">Sample Output</div>
+        <p class="chart-title">Preventive care adoption rate by insurance type</p>
+        <svg class="viz-svg" viewBox="0 0 640 198" role="img" aria-label="Preventive care adoption rate by insurance type versus population average">
+<line x1="462.4" y1="12" x2="462.4" y2="192" class="viz-avg-line"/>
+<text x="462.4" y="8" text-anchor="middle" class="viz-avg-label">Population avg 53%</text>
+<text x="76" y="39.5" text-anchor="end" class="viz-label">Medicare</text>
+<line x1="90.0" y1="36.0" x2="519.8" y2="36.0" class="viz-stem" style="--i:0; --len:429.8"/>
+<circle cx="519.8" cy="36.0" r="6" class="viz-lolli above" style="--i:0" data-label="Medicare" data-value="61.4% preventive care" tabindex="0" aria-label="Medicare: 61.4 percent preventive care adoption"></circle>
+<text x="531.8" y="39.5" class="viz-value">61%</text>
+<text x="76" y="83.5" text-anchor="end" class="viz-label">Private</text>
+<line x1="90.0" y1="80.0" x2="469.4" y2="80.0" class="viz-stem" style="--i:1; --len:379.4"/>
+<circle cx="469.4" cy="80.0" r="6" class="viz-lolli above" style="--i:1" data-label="Private" data-value="54.2% preventive care" tabindex="0" aria-label="Private: 54.2 percent preventive care adoption"></circle>
+<text x="481.4" y="83.5" class="viz-value">54%</text>
+<text x="76" y="127.5" text-anchor="end" class="viz-label">Medicaid</text>
+<line x1="90.0" y1="124.0" x2="424.6" y2="124.0" class="viz-stem" style="--i:2; --len:334.6"/>
+<circle cx="424.6" cy="124.0" r="6" class="viz-lolli below" style="--i:2" data-label="Medicaid" data-value="47.8% preventive care" tabindex="0" aria-label="Medicaid: 47.8 percent preventive care adoption"></circle>
+<text x="436.6" y="127.5" class="viz-value">48%</text>
+<text x="76" y="171.5" text-anchor="end" class="viz-label">Self-Pay</text>
+<line x1="90.0" y1="168.0" x2="324.5" y2="168.0" class="viz-stem" style="--i:3; --len:234.5"/>
+<circle cx="324.5" cy="168.0" r="6" class="viz-lolli below" style="--i:3" data-label="Self-Pay" data-value="33.5% preventive care" tabindex="0" aria-label="Self-Pay: 33.5 percent preventive care adoption"></circle>
+<text x="336.5" y="171.5" class="viz-value">34%</text>
+</svg>
+        <div class="chart-legend">
+          <span class="chart-legend-item"><span class="chart-legend-swatch s1"></span>Above population average</span>
+          <span class="chart-legend-item"><span class="chart-legend-swatch s2"></span>Below population average</span>
+        </div>
+        <details class="chart-table-toggle">
+          <summary>View as table</summary>
+          <table class="chart-data-table">
+            <thead><tr><th>Insurance Type</th><th class="num">Preventive Care %</th><th class="num">Vs. Average</th></tr></thead>
+            <tbody><tr><td>Medicare</td><td class="num">61.4%</td><td class="num">+8.2 pts</td></tr><tr><td>Private</td><td class="num">54.2%</td><td class="num">+1.0 pts</td></tr><tr><td>Medicaid</td><td class="num">47.8%</td><td class="num">-5.4 pts</td></tr><tr><td>Self-Pay</td><td class="num">33.5%</td><td class="num">-19.7 pts</td></tr></tbody>
+          </table>
+        </details>
+      </div>
     </div>
 
     <div class="case-nav">

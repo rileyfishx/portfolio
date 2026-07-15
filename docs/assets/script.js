@@ -63,8 +63,16 @@
   var seriesColor = function (slot) {
     return getComputedStyle(root).getPropertyValue(slot === "s2" ? "--series-2" : "--series-1").trim();
   };
+  // Reads the mark's own resolved fill so any series class (s1/s2, f1-f4,
+  // above/below, or the default bubble hue) works without special-casing.
+  var markColor = function (mark) {
+    var fill = getComputedStyle(mark).fill;
+    return fill && fill !== "none" ? fill : seriesColor("s1");
+  };
 
-  var chartMarks = document.querySelectorAll(".viz-bar[data-value], .viz-dot[data-value]");
+  var chartMarks = document.querySelectorAll(
+    ".viz-bar[data-value], .viz-dot[data-value], .viz-seg[data-value], .viz-bubble[data-value], .viz-lolli[data-value]"
+  );
   var tooltip = null;
   if (chartMarks.length || document.querySelector(".viz-hit-col")) {
     tooltip = document.createElement("div");
@@ -90,7 +98,7 @@
       row.className = "tt-row";
       var key = document.createElement("span");
       key.className = "tt-key";
-      key.style.background = seriesColor(mark.classList.contains("s2") ? "s2" : "s1");
+      key.style.background = markColor(mark);
       var name = document.createElement("span");
       name.className = "tt-name";
       name.textContent = mark.getAttribute("data-label") || "";

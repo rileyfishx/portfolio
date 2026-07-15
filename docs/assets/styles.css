@@ -16,6 +16,9 @@
   --accent-2: #b45309;
   --series-1: #00876f;
   --series-2: #b45309;
+  --series-3: #6d4aa8;
+  --series-4: #bb2f56;
+  --seg-ink: #ffffff;
   --code-bg: #16181d;
   --code-text: #e6e8eb;
   --code-keyword: #7fd3c7;
@@ -44,6 +47,9 @@
   --accent-2: #f0b563;
   --series-1: #20a08d;
   --series-2: #bf7d1f;
+  --series-3: #9b7fd4;
+  --series-4: #e2647f;
+  --seg-ink: #16181d;
   --code-bg: #0b0d11;
   --code-text: #e6e8eb;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 12px 32px rgba(0, 0, 0, 0.35);
@@ -64,6 +70,9 @@
     --accent-2: #f0b563;
     --series-1: #20a08d;
     --series-2: #bf7d1f;
+    --series-3: #9b7fd4;
+    --series-4: #e2647f;
+    --seg-ink: #16181d;
     --code-bg: #0b0d11;
     --code-text: #e6e8eb;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 12px 32px rgba(0, 0, 0, 0.35);
@@ -925,3 +934,129 @@ footer .foot-links a:hover { color: var(--accent); }
 }
 
 .skill-groups .pill-row { margin-top: 0; }
+
+/* ---------- Healthcare charts: composition bar, bubble scatter, lollipop ---------- */
+
+/* Composition bar (stacked, part-to-whole) */
+.viz-seg {
+  transform-box: fill-box;
+  transform-origin: left center;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.viz-seg:hover, .viz-seg:focus-visible { filter: brightness(1.08); outline: none; }
+.viz-seg.f1 { fill: var(--series-1); }
+.viz-seg.f2 { fill: var(--series-3); }
+.viz-seg.f3 { fill: var(--series-2); }
+.viz-seg.f4 { fill: var(--series-4); }
+
+.viz-seg-label {
+  fill: var(--seg-ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.legend-4 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 18px;
+}
+.legend-4 .chart-legend-item .chart-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.legend-4 .chart-legend-swatch.f1 { background: var(--series-1); }
+.legend-4 .chart-legend-swatch.f2 { background: var(--series-3); }
+.legend-4 .chart-legend-swatch.f3 { background: var(--series-2); }
+.legend-4 .chart-legend-swatch.f4 { background: var(--series-4); }
+
+/* Bubble scatter */
+.viz-bubble {
+  fill: var(--series-1);
+  stroke: var(--bg-elevated);
+  stroke-width: 1.5;
+  opacity: var(--op, 1);
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.15s cubic-bezier(.34,1.56,.64,1), stroke-width 0.15s ease;
+}
+.viz-bubble:hover, .viz-bubble:focus-visible {
+  transform: scale(1.15);
+  stroke-width: 2;
+  outline: none;
+}
+.viz-ref-line {
+  stroke: var(--text-faint);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+.viz-ref-label {
+  fill: var(--text-faint);
+  font-family: var(--mono);
+  font-size: 9.5px;
+}
+
+/* Lollipop chart */
+.viz-stem {
+  stroke: var(--border);
+  stroke-width: 2;
+}
+.viz-lolli {
+  stroke: var(--bg-elevated);
+  stroke-width: 2;
+  cursor: pointer;
+  transition: r 0.15s cubic-bezier(.34,1.56,.64,1);
+}
+.viz-lolli.above { fill: var(--series-1); }
+.viz-lolli.below { fill: var(--series-2); }
+.viz-lolli:hover, .viz-lolli:focus-visible { r: 8; outline: none; }
+.viz-avg-line {
+  stroke: var(--text-faint);
+  stroke-width: 1.25;
+  opacity: 0.6;
+}
+.viz-avg-label {
+  fill: var(--text-faint);
+  font-family: var(--mono);
+  font-size: 9.5px;
+}
+
+/* Entrance animation for the new mark types, same reduced-motion gate as the NHL charts */
+@media (prefers-reduced-motion: no-preference) {
+  .chart-wrap .viz-seg {
+    transform: scaleX(0);
+    transition: transform 0.65s cubic-bezier(.16,1,.3,1);
+    transition-delay: calc(var(--i, 0) * 110ms);
+  }
+  .chart-wrap.chart-in-view .viz-seg { transform: scaleX(1); }
+  .chart-wrap .viz-seg-label { opacity: 0; transition: opacity 0.3s ease; transition-delay: calc(var(--i, 0) * 110ms + 0.5s); }
+  .chart-wrap.chart-in-view .viz-seg-label { opacity: 1; }
+
+  .chart-wrap .viz-bubble {
+    opacity: 0;
+    transform: scale(0.3);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.34,1.56,.64,1);
+    transition-delay: calc(var(--i, 0) * 45ms);
+  }
+  .chart-wrap.chart-in-view .viz-bubble { opacity: var(--op, 1); transform: scale(1); }
+  .chart-wrap .viz-bubble:hover, .chart-wrap .viz-bubble:focus-visible { transform: scale(1.15); }
+
+  .chart-wrap .viz-stem {
+    stroke-dasharray: var(--len, 400);
+    stroke-dashoffset: var(--len, 400);
+    transition: stroke-dashoffset 0.6s cubic-bezier(.16,1,.3,1);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+  .chart-wrap.chart-in-view .viz-stem { stroke-dashoffset: 0; }
+  .chart-wrap .viz-lolli {
+    opacity: 0;
+    transition: opacity 0.3s ease, r 0.15s cubic-bezier(.34,1.56,.64,1);
+    transition-delay: calc(var(--i, 0) * 90ms + 0.35s);
+  }
+  .chart-wrap.chart-in-view .viz-lolli { opacity: 1; }
+}
