@@ -17,7 +17,9 @@
       "Bash(pkill -f \"http.server 8747\")",
       "Bash(python3 gen_healthcare.py)",
       "Bash(pkill -f \"http.server 8748\")",
-      "Bash(pkill -f \"http.server 8749\")"
+      "Bash(pkill -f \"http.server 8749\")",
+      "Bash(cat /tmp/portfolio_http8.log 2>&1; echo \"---\"; lsof -i :8750 2>&1; ps aux | grep http.server | grep -v grep)",
+      "Bash(pkill -f \"http.server 8750\")"
     ]
   }
 }
